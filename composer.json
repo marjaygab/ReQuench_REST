@@ -1,0 +1,13 @@
+{
+    "name": "tapay/re-quench",
+    "description": "Official PHP Web App for ReQuench",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marjay Tapay",
+            "email": "tapaymarjay@gmail.com"
+        }
+    ],
+    "require": {}
+}
