@@ -13,6 +13,7 @@ function getAccountsDetails($response,$otp_entered)
         $Acc_ID = $row['Acc_ID'];
         $Access_Level = $row['Access_Level'];
     }
+
         switch ($Access_Level) {
         case 'ADMIN':
             $access_level = 'admin';
@@ -49,11 +50,13 @@ function getAccountsDetails($response,$otp_entered)
             $response['Success'] = true;
             return $Acc_ID;
         }
-    else{
+        else{
             $response['Success'] = false;
             $response['Account'] = '';
             return NULL;
         }
+    }else {
+        return NULL;
     }
 }
 
@@ -67,6 +70,7 @@ if ($contents != null) {
         $response['Success'] = true;
     }else{
         $response['Success'] = false;
+        echo 'Is Null'
     }
     echo json_encode($response);
 }
