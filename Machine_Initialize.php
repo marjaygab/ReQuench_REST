@@ -6,6 +6,7 @@ function getAccountsDetails($response,$otp_entered)
 {
     $query = "SELECT accounts.Acc_ID,acc_levels.Access_Level FROM accounts INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID WHERE OTP = '$otp_entered'";
     $result = mysqli_query($conn,$query);
+    echo mysqli_num_rows($result);
     if (mysqli_num_rows($result) == 1) {
     $Acc_ID = '';
     $Access_Level = '';
