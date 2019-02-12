@@ -4,20 +4,48 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL); 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-function getAccountsDetails($response,$otp_entered)
+function fetchRecentPurchase($conn,$Acc_ID)
+{
+  $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$Acc_ID'";
+  $result = mysqli_query($conn,$query);
+  $row = array();
+  if (mysqli_num_rows($result) > 0) {
+    while($r = mysqli_fetch_assoc($result)){
+      $row[] = $r;
+    }
+    return $row;
+  }else{
+    return null;
+  }
+}
+
+function fetchRecentTransaction($conn,$Acc_ID)
+{
+  // code...
+  $query = "SELECT * FROM transaction_history WHERE Acc_ID = '$Acc_ID'";
+  $result = mysqli_query($conn,$query);
+  $row = array();
+  if (mysqli_num_rows($result) > 0) {
+    while($r = mysqli_fetch_assoc($result)){
+      $row[] = $r;
+    }
+    return $row;
+  }else{
+    return null;
+  }
+}
+
+
+function getAccountsDetails($conn,$response,$otp_entered)
 {
     $query = "SELECT accounts.Acc_ID,acc_levels.Access_Level FROM accounts INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID WHERE OTP = '$otp_entered'";
-
     $result = mysqli_query($conn,$query);
-    echo $query;
-    echo 'Number of rows: '. mysqli_num_rows($result);
     if (mysqli_num_rows($result) > 0) {
     $Acc_ID = '';
     $Access_Level = '';
     while ($row  = mysqli_fetch_assoc($result)) {
         $Acc_ID = $row['Acc_ID'];
         $Access_Level = $row['Access_Level'];
-        var_dump($row);
     }
 
         switch ($Access_Level) {
@@ -54,7 +82,7 @@ function getAccountsDetails($response,$otp_entered)
             $row = mysqli_fetch_assoc($result);
             $response['Account'] = $row;
             $response['Success'] = true;
-            return $Acc_ID;
+            return $response;
         }
         else{
             $response['Success'] = false;
@@ -62,7 +90,6 @@ function getAccountsDetails($response,$otp_entered)
             return NULL;
         }
     }else {
-        echo 'Not 1';
         return NULL;
     }
 }
@@ -72,12 +99,16 @@ if ($contents != null) {
     $data = json_decode($contents);
     $otp_entered = $data->{"OTP_Entered"};
     $response = array();
-    $returned_accid = getAccountsDetails($response,$otp_entered);
+    $response = getAccountsDetails($conn,$response,$otp_entered);
+    $returned_accid = $response['Account']['Acc_ID'];
     if ($returned_accid != NULL) {
         $response['Success'] = true;
+        $purchase_history = fetchRecentPurchase($conn,$returned_accid);
+        $transaction_history = fetchRecentTransaction($conn,$returned_accid);
+        $response['Purchase_History'] = $purchase_history;
+        $response['Transaction_History'] = $transaction_history;
     }else{
         $response['Success'] = false;
-        echo 'Is Null';
     }
     echo json_encode($response);
 }
