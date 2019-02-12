@@ -1,6 +1,8 @@
 <?php
 require 'ConnectDB.php';
-
+ini_set('display_errors', 'On'); 
+error_reporting(E_ALL); 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 function getAccountsDetails($response,$otp_entered)
 {
@@ -9,7 +11,7 @@ function getAccountsDetails($response,$otp_entered)
     $result = mysqli_query($conn,$query);
     echo $query;
     echo 'Number of rows: '. mysqli_num_rows($result);
-    if (mysqli_num_rows($result) == 1) {
+    if (mysqli_num_rows($result) > 0) {
     $Acc_ID = '';
     $Access_Level = '';
     while ($row  = mysqli_fetch_assoc($result)) {
