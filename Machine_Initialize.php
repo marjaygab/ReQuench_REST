@@ -58,6 +58,7 @@ function getAccountsDetails($response,$otp_entered)
             return NULL;
         }
     }else {
+        echo 'Not 1';
         return NULL;
     }
 }
