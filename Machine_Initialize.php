@@ -12,6 +12,7 @@ function getAccountsDetails($response,$otp_entered)
     while ($row  = mysqli_fetch_assoc($result)) {
         $Acc_ID = $row['Acc_ID'];
         $Access_Level = $row['Access_Level'];
+        var_dump($row);
     }
 
         switch ($Access_Level) {
