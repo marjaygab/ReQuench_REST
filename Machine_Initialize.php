@@ -70,7 +70,7 @@ if ($contents != null) {
         $response['Success'] = true;
     }else{
         $response['Success'] = false;
-        echo 'Is Null'
+        echo 'Is Null';
     }
     echo json_encode($response);
 }
