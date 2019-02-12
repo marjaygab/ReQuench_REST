@@ -8,6 +8,7 @@ function getAccountsDetails($response,$otp_entered)
 
     $result = mysqli_query($conn,$query);
     echo $query;
+    echo 'Number of rows: '. mysqli_num_rows($result);
     if (mysqli_num_rows($result) == 1) {
     $Acc_ID = '';
     $Access_Level = '';
