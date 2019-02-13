@@ -55,8 +55,6 @@
         }
     }
 
-
-
     function createUnrec($conn,$RFID_ID)
     {
         $Balance = 0;
@@ -76,10 +74,10 @@
 
         $RFID_ID = $data -> {"RFID_ID"};
 
-        $rfid_present = checkAcc($conn,$RFID_ID);
-        if ($rfid_present['Success']) {
+        $rfid_result = checkAcc($conn,$RFID_ID);
+        if ($rfid_result['Success']) {
             $response['Success'] = true;
-            $response['Account'] = getAcc($conn,$rfid_present['Acc_ID']);
+            $response['Account'] = getAcc($conn,$rfid_result['Acc_ID']);
         } else {
             //create unrecorded account
             if (createUnrec($conn,$RFID_ID)) {
@@ -88,7 +86,6 @@
                 $response['Success'] = false;
             }
         }
-        
         
     } else {
         $response['Success'] = false;    
