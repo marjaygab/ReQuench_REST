@@ -59,6 +59,24 @@
         }
     }
 
+    function getUnrec($conn,$UU_ID)
+    {
+        $query = "SELECT * FROM unrecorded_users WHERE UU_ID = '$UU_ID'";
+        $result = mysqli_query($conn,$query);
+        $row = array();
+        if (mysqli_num_rows($result) == 1) {
+            while($r = mysqli_fetch_assoc($result)){
+                $row[] = $r;
+            }
+            return $row;
+        } else if (mysqli_num_rows($result) > 1) {
+            //error occured. Duplicate account detected
+            return false;
+        }else{
+            return false;
+        }
+    }
+
     function createUnrec($conn,$RFID_ID)
     {
         $Balance = 0;
@@ -79,18 +97,21 @@
         $RFID_ID = $data -> {"RFID_ID"};
 
         $rfid_result = checkAcc($conn,$RFID_ID);
-        if ($rfid_result['Success']) {
+        $unrec_result = checkUnrec($conn,$RFID_ID);
+
+        if ($unrec_result['Success']) {
+            $response['Success'] = true;
+            $response['Account'] = getUnrec($conn,$rfid_result['UU_ID']);
+        } else if ($rfid_result['Success']) {
             $response['Success'] = true;
             $response['Account'] = getAcc($conn,$rfid_result['Acc_ID']);
-        } else {
-            //create unrecorded account
+        }else {
             if (createUnrec($conn,$RFID_ID)) {
                 $response['Success'] = true;
             } else {
                 $response['Success'] = false;
             }
         }
-        
     } else {
         $response['Success'] = false;    
     }
