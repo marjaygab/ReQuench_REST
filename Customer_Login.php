@@ -43,13 +43,38 @@
     }
     function getAcc($conn,$Acc_ID)
     {
-        $query = "SELECT * FROM accounts WHERE Acc_ID = '$Acc_ID'";
+        $query = "SELECT accounts.Acc_ID,acc_levels.Access_Level,accounts.RFID_ID FROM accounts INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID WHERE accounts.Acc_ID = '$Acc_ID'";
         $result = mysqli_query($conn,$query);
         $row = array();
         if (mysqli_num_rows($result) == 1) {
             while($r = mysqli_fetch_assoc($result)){
                 $row[] = $r;
             }
+            $access_level = '';
+            switch ($row[0]['Access_Level']) {
+                case 'ADMIN':
+                    $access_level = 'acc_admin';
+                break;
+                case 'USER':
+                    $access_level = 'acc_users';
+                break;
+                case 'CASHIER':
+                    $access_level = 'acc_cashier';
+                break;
+                default:
+                break;
+            }
+            
+            $query = "SELECT ID_Number,Balance FROM $access_level WHERE Acc_ID = '$Acc_ID'";
+            $results = mysqli_query($conn,$query);
+            if (mysqli_num_rows($results) == 1) {
+                $result_row = mysqli_fetch_assoc($results);
+                $row[0]['ID_Number'] = $result_row['ID_Number'];
+                $row[0]['Balance'] = $result_row['Balance'];
+            }else{
+                //duplicate or non detected
+            }
+
             return $row;
         } else if (mysqli_num_rows($result) > 1) {
             //error occured. Duplicate account detected
