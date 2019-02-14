@@ -8,7 +8,7 @@
 
     function setID($conn,$UU_ID,$ID_Number)
     {
-        $query = "UPDATE unrecorded_users SET ID_NUmber = '$ID_Number' WHERE UU_ID = '$UU_ID'";
+        $query = "UPDATE unrecorded_users SET ID_Number = '$ID_Number' WHERE UU_ID = '$UU_ID'";
         if (mysqli_query($conn,$query)) {
             return true;
         }else{

@@ -137,6 +137,7 @@
                 $response['Success'] = true;
                 $response['Account_Type'] = 'Inserted_Unrecorded';
                 $response['Insert_ID'] = $insert_id;
+                $response['Balance'] = 0;
             } else {
                 $response['Success'] = false;
             }
