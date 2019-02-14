@@ -125,7 +125,7 @@
         $unrec_result = checkUnrec($conn,$RFID_ID);
         if ($unrec_result['Success']) {
             $response['Success'] = true;
-            $response['Account'] = getUnrec($conn,$rfid_result['UU_ID']);
+            $response['Account'] = getUnrec($conn,$unrec_result['UU_ID']);
             $response['Account_Type'] = 'Unrecorded';
         } else if ($rfid_result['Success']) {
             $response['Success'] = true;
