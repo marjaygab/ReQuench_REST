@@ -93,7 +93,7 @@
             while($r = mysqli_fetch_assoc($result)){
                 $row[] = $r;
             }
-            return $row;
+            return $row[0];
         } else if (mysqli_num_rows($result) > 1) {
             //error occured. Duplicate account detected
             return false;
