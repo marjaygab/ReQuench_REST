@@ -107,9 +107,9 @@
         $Balance = 0;
         $query = "INSERT INTO unrecorded_users (RFID_ID,Balance) VALUES ('$RFID_ID','$Balance')";
         if (mysqli_query($conn,$query)) {
-            return true;
+            return mysqli_insert_id($conn);
         }else{
-            return false;
+            return NULL;
         }
     }
 
@@ -123,7 +123,6 @@
 
         $rfid_result = checkAcc($conn,$RFID_ID);
         $unrec_result = checkUnrec($conn,$RFID_ID);
-
         if ($unrec_result['Success']) {
             $response['Success'] = true;
             $response['Account'] = getUnrec($conn,$rfid_result['UU_ID']);
@@ -133,8 +132,11 @@
             $response['Account'] = getAcc($conn,$rfid_result['Acc_ID']);
             $response['Account_Type'] = 'Recorded';
         }else {
-            if (createUnrec($conn,$RFID_ID)) {
+            $insert_id = createUnrec($conn,$RFID_ID);
+            if ($insert_id != NULL) {
                 $response['Success'] = true;
+                $response['Account_Type'] = 'Inserted_Unrecorded';
+                $response['Insert_ID'] = $insert_id;
             } else {
                 $response['Success'] = false;
             }
