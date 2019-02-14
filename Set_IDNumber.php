@@ -23,6 +23,7 @@
         $ID_Number = $data -> {"ID_Number"};
         if (setID($conn,$UU_ID,$ID_Number)) {
             $response['Success'] = true;
+            $response['ID_Number'] = $ID_Number;
         } else {
             $response['Success'] = false;
         }   
