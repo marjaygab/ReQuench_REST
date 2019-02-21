@@ -9,7 +9,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 function fetchRecentPurchase($conn,$Acc_ID)
 {
-  $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$Acc_ID'";
+  $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$Acc_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -25,7 +25,7 @@ function fetchRecentPurchase($conn,$Acc_ID)
 function fetchRecentTransaction($conn,$Acc_ID)
 {
   // code...
-  $query = "SELECT * FROM transaction_history WHERE Acc_ID = '$Acc_ID'";
+  $query = "SELECT * FROM transaction_history WHERE Acc_ID = '$Acc_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -41,7 +41,7 @@ function fetchRecentTransaction($conn,$Acc_ID)
 
 function fetchRecentPurchaseUnrecorded($conn,$UU_ID)
 {
-  $query = "SELECT * FROM purchase_history_unrec WHERE UU_ID = '$UU_ID'";
+  $query = "SELECT * FROM purchase_history_unrec WHERE UU_ID = '$UU_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -57,7 +57,7 @@ function fetchRecentPurchaseUnrecorded($conn,$UU_ID)
 function fetchRecentTransactionUnrecorded($conn,$UU_ID)
 {
   // code...
-  $query = "SELECT * FROM transaction_history_unrec WHERE UU_ID = '$UU_ID'";
+  $query = "SELECT * FROM transaction_history_unrec WHERE UU_ID = '$UU_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -176,16 +176,16 @@ if ($contents != null) {
         $response['Success'] = true;
         $purchase_history = fetchRecentPurchase($conn,$returned_accid);
         $transaction_history = fetchRecentTransaction($conn,$returned_accid);
-        $response['Purchase_History'] = $purchase_history;
-        $response['Transaction_History'] = $transaction_history;
+        $response['Purchase_History'] = $purchase_history[0];
+        $response['Transaction_History'] = $transaction_history[0];
         $response['Account_Type'] = 'Recorded';
         echo json_encode($response);
     }else if ($returned_uuid != NULL) {
       $response['Success'] = true;
       $purchase_history = fetchRecentPurchaseUnrecorded($conn,$returned_uuid);
       $transaction_history = fetchRecentTransactionUnrecorded($conn,$returned_uuid);
-      $response_unrecorded['Purchase_History'] = $purchase_history;
-      $response_unrecorded['Transaction_History'] = $transaction_history;
+      $response_unrecorded['Purchase_History'] = $purchase_history[0];
+      $response_unrecorded['Transaction_History'] = $transaction_history[0];
       $response_unrecorded['Account_Type'] = 'Unrecorded';
       echo json_encode($response_unrecorded);
     }
