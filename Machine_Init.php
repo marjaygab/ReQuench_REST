@@ -1,6 +1,6 @@
 <?php
   require 'ConnectDB.php';
-
+  
 
 
 function fetchRecentPurchase($conn,$Acc_ID)
@@ -37,13 +37,37 @@ function fetchRecentTransaction($conn,$Acc_ID)
   }
 }
 
+
+  function sortlist(list)
+  {
+
+    return list
+  }
+
+  // function sorter($HIST1,$HIST2)
+  // {
+  //   $date1 = new Date($HIST1->)
+
+  //   if(($HIST1->PRIO)==($HIST2->PRIO)){
+  //     return ($HIST1->AT)<=($HIST2->AT);
+  //   }else{
+  //     return ($HIST1->PRIO)<=($HIST2->PRIO);
+  //   }
+  // }
+
+
   $contents = file_get_contents('php://input');
+    
+
   if ($contents != null) {
     $data = json_decode($contents);
     $Acc_ID = $data->{"Acc_ID"};
     $response = array();
     $purchase_history = fetchRecentPurchase($conn,$Acc_ID);
     $transaction_history = fetchRecentTransaction($conn,$Acc_ID);
+
+
+
     $response['Purchase_History'] = $purchase_history;
     $response['Transaction_History'] = $transaction_history;
     print(json_encode($response,JSON_PRETTY_PRINT));
