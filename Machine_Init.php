@@ -5,7 +5,7 @@
 
 function fetchRecentPurchase($conn,$Acc_ID)
 {
-  $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$Acc_ID'";
+  $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$Acc_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -24,7 +24,7 @@ function fetchRecentPurchase($conn,$Acc_ID)
 function fetchRecentTransaction($conn,$Acc_ID)
 {
   // code...
-  $query = "SELECT * FROM transaction_history WHERE Acc_ID = '$Acc_ID'";
+  $query = "SELECT * FROM transaction_history WHERE Acc_ID = '$Acc_ID' ORDER BY Date DESC, Time DESC";
   $result = mysqli_query($conn,$query);
   $row = array();
   if (mysqli_num_rows($result) > 0) {
@@ -65,11 +65,8 @@ function fetchRecentTransaction($conn,$Acc_ID)
     $response = array();
     $purchase_history = fetchRecentPurchase($conn,$Acc_ID);
     $transaction_history = fetchRecentTransaction($conn,$Acc_ID);
-
-
-
-    $response['Purchase_History'] = $purchase_history;
-    $response['Transaction_History'] = $transaction_history;
+    $response['Purchase_History'] = $purchase_history[0];
+    $response['Transaction_History'] = $transaction_history[0];
     print(json_encode($response,JSON_PRETTY_PRINT));
   }
   else if (isset($_POST['Access_Level'])) {
