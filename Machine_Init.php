@@ -41,7 +41,7 @@ function fetchRecentTransaction($conn,$Acc_ID)
   function sortlist(list)
   {
 
-    return list
+    return list;
   }
 
   // function sorter($HIST1,$HIST2)
