@@ -57,7 +57,7 @@ function fetchRecentTransaction($conn,$Acc_ID)
 
 
   $contents = file_get_contents('php://input');
-    
+  echo 'Testing';
 
   if ($contents != null) {
     $data = json_decode($contents);
