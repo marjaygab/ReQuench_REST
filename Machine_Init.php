@@ -38,12 +38,6 @@ function fetchRecentTransaction($conn,$Acc_ID)
 }
 
 
-  function sortlist(list)
-  {
-
-    return list;
-  }
-
   // function sorter($HIST1,$HIST2)
   // {
   //   $date1 = new Date($HIST1->)
@@ -57,7 +51,6 @@ function fetchRecentTransaction($conn,$Acc_ID)
 
 
   $contents = file_get_contents('php://input');
-  echo 'Testing';
 
   if ($contents != null) {
     $data = json_decode($contents);
