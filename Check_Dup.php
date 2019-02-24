@@ -34,9 +34,9 @@ require 'ConnectDB.php';
  // check for duplicate Id number from a specific user category
  function checkForDuplicateIDNum($conn,$ID_Number)
  {
-   $query = "SELECT * FROM acc_users WHERE ID_Number='$ID_Number' UNION
-   SELECT * FROM acc_admin WHERE ID_Number='$ID_Number' UNION
-   SELECT * FROM acc_cashier WHERE ID_Number='$ID_Number'";
+   $query = "SELECT ID_Number FROM acc_users WHERE ID_Number='$ID_Number' UNION
+   SELECT ID_Number FROM acc_admin WHERE ID_Number='$ID_Number' UNION
+   SELECT ID_Number FROM acc_cashier WHERE ID_Number='$ID_Number'";
 
    // $query_user = "SELECT * FROM acc_users WHERE ID_Number = '$ID_Number'";
    // $query_cashier = "SELECT * FROM acc_cashier WHERE ID_Number = '$ID_Number'";
@@ -46,9 +46,9 @@ require 'ConnectDB.php';
    // $result_user = mysqli_query($conn,$query_user);
    $result = mysqli_query($conn,$query);
    if (mysqli_num_rows($result) == 0) {
-     return false;
-   }else{
      return true;
+   }else{
+     return false;
    }
  }
 
