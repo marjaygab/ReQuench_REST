@@ -31,6 +31,7 @@ if ($contents != null) {
     $Acc_ID = $data->{"Acc_ID"};
     $row = getUserTransaction($conn,$Acc_ID);
     $response["User_Transaction"] = $row;
+    $response['client']= 'loren';
     $response['Success'] = true;
     echo json_encode($response,JSON_PRETTY_PRINT);
 
