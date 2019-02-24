@@ -22,7 +22,7 @@ require 'ConnectDB.php';
  }
  function checkForDuplicateUserName($conn,$User_Name)
  {
-   $query = "SELECT * FROM accounts WHERE Email = '$User_Name'";
+   $query = "SELECT * FROM accounts WHERE User_Name = '$User_Name'";
    $result = mysqli_query($conn,$query);
 
    if (mysqli_num_rows($result) == 0) {
