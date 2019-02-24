@@ -20,7 +20,7 @@ if (mysqli_num_rows($result) > 0) {
   while ($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
   }
-  $response['Transaction_List'] = $row;
+  $response['Transaction_List'] = $rows;
   echo json_encode($response,JSON_PRETTY_PRINT);
 }
 mysqli_close($conn);
