@@ -21,7 +21,7 @@ if (mysqli_num_rows($result) > 0) {
     $rows[] = $r;
   }
   $response['Transaction_List'] = $row;
-  echo json_encode($rows,JSON_PRETTY_PRINT);
+  echo json_encode($response,JSON_PRETTY_PRINT);
 }
 mysqli_close($conn);
 
