@@ -14,7 +14,6 @@ function addAccount($conn,$ID_Number,$First_Name,$Last_Name,$User_Name,$Password
   $rows = array();
   $response = array();
 
-  $al_id = 0;
   if ($Access_Level == 'USER') {
     // code...
     $al_id = 3;
@@ -22,6 +21,7 @@ function addAccount($conn,$ID_Number,$First_Name,$Last_Name,$User_Name,$Password
     // code...
     $al_id = 1;
   }elseif ($Access_Level == 'CASHIER') {
+    // code...
     $al_id = 2;
   }
 
@@ -37,7 +37,7 @@ function addAccount($conn,$ID_Number,$First_Name,$Last_Name,$User_Name,$Password
         case 'ADMIN':
           $query = "INSERT INTO acc_admin (Acc_ID,ID_Number,First_Name,Last_Name,Balance) VALUES ('$Acc_ID','$ID_Number','$First_Name','$Last_Name','0')";
           break;
-        case 'Cashier':
+        case 'CASHIER':
           $query = "INSERT INTO acc_cashier (Acc_ID,ID_Number,First_Name,Last_Name,Balance) VALUES ('$Acc_ID','$ID_Number','$First_Name','$Last_Name','0')";
           break;
         default:
