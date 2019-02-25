@@ -76,6 +76,7 @@ function verify($conn,$email)
     echo $json_string;
   }else{
     $response["Success"] = "false";
+    $response["Email_Value"] = $email;
     $json_string = json_encode($response,JSON_PRETTY_PRINT);
     echo $json_string;
   }
