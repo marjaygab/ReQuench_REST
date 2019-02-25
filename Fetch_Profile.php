@@ -9,132 +9,61 @@ header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 
-
 $contents = file_get_contents('php://input');
 
-
-
 if ($contents != null) {
+    $data = json_decode($contents);
+    $Acc_ID = $data->{"Acc_ID"};
+    $query = "SELECT * FROM accounts INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID WHERE Acc_ID = '$Acc_ID'";
+    $result = mysqli_query($conn, $query);
+    if (mysqli_num_rows($result) == 1) {
+        $Acc_ID = '';
+        $Access_Level = '';
+        while ($row = mysqli_fetch_assoc($result)) {
+            $Acc_ID = $row['Acc_ID'];
+            $Access_Level = $row['Access_Level'];
+        }
 
-  $data = json_decode($contents);
+        switch ($Access_Level) {
+          case 'ADMIN':
+            $access_level = 'admin';
+            $mysql_qry = "SELECT *
+            FROM accounts
+            INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
+            INNER JOIN acc_admin on accounts.Acc_ID = acc_admin.Acc_ID
+            WHERE accounts.Acc_ID = '$Acc_ID'";
+            break;
+          case 'CASHIER':
+            $access_level = 'cashier';
+            $mysql_qry = "SELECT *
+            FROM accounts
+            INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
+            INNER JOIN acc_cashier on accounts.Acc_ID = acc_cashier.Acc_ID
+            WHERE accounts.Acc_ID = '$Acc_ID'";
+            break;
+          case 'USER':
+            $access_level = 'user';
+            $mysql_qry = "SELECT *
+            FROM accounts
+            INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
+            INNER JOIN acc_users on accounts.Acc_ID = acc_users.Acc_ID
+            WHERE accounts.Acc_ID = '$Acc_ID'";
+            break;
+          default:
+            die("An Error Occured");
+            break;
+        }
 
-  $otp_entered = $data->{"Acc_ID"};
-
-  $query = "";
-
-  $result = mysqli_query($conn,$query);
-
-
-
-  if (mysqli_num_rows($result) == 1) {
-
-    $Acc_ID = '';
-
-    $Access_Level = '';
-
-    while ($row  = mysqli_fetch_assoc($result)) {
-
-      $Acc_ID = $row['Acc_ID'];
-
-      $Access_Level = $row['Access_Level'];
-
+        $result = mysqli_query($conn, $mysql_qry);
+        if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+        }
+        $response = array();
+        $response['Success'] = true;
+        $response['User_Information'] = $row;
+        $json_string = json_encode($response, JSON_PRETTY_PRINT);
+        echo $json_string;
     }
-
-      // switch ($Access_Level) {
-
-      //   case 'ADMIN':
-
-      //     $access_level = 'admin';
-
-      //     $mysql_qry = "SELECT accounts.Acc_ID,accounts.User_Name,accounts.Password,acc_levels.Access_Level,acc_admin.Acc_Admin_ID,acc_admin.First_Name,acc_admin.Last_Name,acc_admin.Balance
-
-      //     FROM accounts
-
-      //     INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
-
-      //     INNER JOIN acc_admin on accounts.Acc_ID = acc_admin.Acc_ID
-
-      //     WHERE accounts.Acc_ID = '$account_id'";
-
-      //     break;
-
-      //   case 'CASHIER':
-
-      //     $access_level = 'cashier';
-
-      //     $mysql_qry = "SELECT accounts.Acc_ID,accounts.User_Name,accounts.Password,acc_levels.Access_Level,acc_cashier.Acc_Cashier_ID,acc_cashier.First_Name,acc_cashier.Last_Name,acc_cashier.Balance
-
-      //     FROM accounts
-
-      //     INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
-
-      //     INNER JOIN acc_cashier on accounts.Acc_ID = acc_cashier.Acc_ID
-
-      //     WHERE accounts.Acc_ID = '$account_id'";
-
-      //     break;
-
-      //   case 'USER':
-
-      //     $access_level = 'user';
-
-      //     $mysql_qry = "SELECT accounts.Acc_ID,accounts.User_Name,accounts.Password,acc_levels.Access_Level,acc_users.Acc_user_ID,acc_users.First_Name,acc_users.Last_Name,acc_users.Balance
-
-      //     FROM accounts
-
-      //     INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID
-
-      //     INNER JOIN acc_users on accounts.Acc_ID = acc_users.Acc_ID
-
-      //     WHERE accounts.Acc_ID = '$account_id'";
-
-      //     break;
-
-      //   default:
-
-      //     die("An Error Occured");
-
-      //     break;
-
-      // }
-
-
-
-      $result = mysqli_query($conn,$mysql_qry);
-
-
-
-      if (mysqli_num_rows($result) > 0){
-
-        $row = mysqli_fetch_assoc($result);
-
-      }
-
-      $json_string = json_encode($row,JSON_PRETTY_PRINT);
-
-      echo $json_string;
-
-
-
-  }
-
-
-
-
-
 }
 
-
-
-
-
 mysqli_close($conn);
-
-
-
-
-
-
-
- ?>
-

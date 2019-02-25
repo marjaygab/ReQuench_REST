@@ -5,7 +5,7 @@ require 'ConnectDB.php';
 
 function firebaseHandler($title,$body,$registrationIds)
 {
-  define( 'API_ACCESS_KEY', 'AAAAuK236cA:APA91bH3bN70C57BjaMo5YeybIuU4Z_hOlzEe0Qa3hf3fjasAlzgzWwXI5bLrLgLYS11gGb2Mpz4ePhnQsk7PVFDI2NdZn8xHSyTo_mlP5zRyuB5ZwFi90XB96G_1YI2859UhrwVw9OX' );
+  define( 'API_ACCESS_KEY', 'AAAAi4it308:APA91bH9BI_DL6-ijsrLgKSwddvDZP2G_ksyfAHlCMaVpC2jtyRrRzknwt0lwV0DcSFj52fOQjL-EgR4bAXS4b7l4f-VTxYDhjDLYF69PLAbRCVEHsMUnD9e0N123ew4wQQ4RMLJ6KHS' );
   $msg = array
   (
   	'title'		=> $title,
