@@ -24,8 +24,6 @@ if ($contents != null) {
             $Access_Level = $row['Access_Level'];
         }
 
-        echo $Access_Level;
-
         switch ($Access_Level) {
           case 'ADMIN':
             $access_level = 'admin';
