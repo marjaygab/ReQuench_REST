@@ -35,7 +35,7 @@ function firebaseHandler($title,$body,$registrationIds)
   curl_close( $ch );
 
   $result_json = json_decode($result);
-
+  echo $result_json;
   if ($result_json->{"success"}) {
     return true;
   }else{
