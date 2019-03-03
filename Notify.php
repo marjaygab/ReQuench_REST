@@ -5,7 +5,7 @@ require 'ConnectDB.php';
 
 function firebaseHandler($title,$body,$registrationIds)
 {
-  define( 'API_ACCESS_KEY', 'AAAAi4it308:APA91bH9BI_DL6-ijsrLgKSwddvDZP2G_ksyfAHlCMaVpC2jtyRrRzknwt0lwV0DcSFj52fOQjL-EgR4bAXS4b7l4f-VTxYDhjDLYF69PLAbRCVEHsMUnD9e0N123ew4wQQ4RMLJ6KHS' );
+  define( 'API_ACCESS_KEY', 'AAAAv__JBfw:APA91bHlOU4fVXW4lyk1rxvMmmf2mgcUWC7SPbHdMp6BSxMd2TOuJsmRQd92zSKa-ko4nx65B3pIABQHYp3hv9o8dVi6LgGRKDuA4zScK_1jJBwGjqrC6tfRLy5iCvzqFcITDFKCFERK' );
   $msg = array
   (
   	'title'		=> $title,
@@ -115,6 +115,8 @@ function getRegTokens($conn)
 
   return $token_array;
 }
+
+
 
 date_default_timezone_set('Asia/Manila');
 $contents = file_get_contents('php://input');
