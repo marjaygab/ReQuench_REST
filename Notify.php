@@ -9,8 +9,9 @@ function firebaseHandler($title,$body,$registrationIds)
   $msg = array
   (
   	'title'		=> $title,
-  	'body' 	=> $body,
-  	'icon'	=> '/assets/images/logo.png'
+    'body' 	=> $body,
+    'click_action': "https://requenchweb2019.firebaseapp.com"
+  	'icon'	=> 'https://requenchweb2019.firebaseapp.com/assets/images/logo.png'
   );
   $fields = array
   (
