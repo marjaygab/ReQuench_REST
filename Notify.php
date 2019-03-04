@@ -10,7 +10,7 @@ function firebaseHandler($title,$body,$registrationIds)
   (
   	'title'		=> $title,
     'body' 	=> $body,
-    'click_action': "https://requenchweb2019.firebaseapp.com"
+    'click_action' => "https://requenchweb2019.firebaseapp.com",
   	'icon'	=> 'https://requenchweb2019.firebaseapp.com/assets/images/logo.png'
   );
   $fields = array
@@ -34,9 +34,8 @@ function firebaseHandler($title,$body,$registrationIds)
   curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
   $result = curl_exec($ch );
   curl_close( $ch );
-
+  // echo $result;
   $result_json = json_decode($result);
-  echo $result_json;
   if ($result_json->{"success"}) {
     return true;
   }else{
@@ -53,6 +52,7 @@ function firebaseHandler($title,$body,$registrationIds)
 function pushNotifs($title,$body,$token_arr)
 {
   // code...
+  echo "Token Array Size: " . sizeof($token_arr);
   for ($i=0; $i < sizeof($token_arr) ; $i++) {
     if (firebaseHandler($title,$body,$token_arr[$i]->registration_token)) {
       $token_arr[$i]->success = true;
@@ -88,9 +88,9 @@ function saveNotifDB($conn,$title,$body)
   VALUES ('$title','$body','$time','$date')";
 
   if (mysqli_query($conn,$query)) {
-    echo 'Success Insert!';
+    // echo 'Success Insert!';
   }else{
-    echo 'Failed Insert!';
+    // echo 'Failed Insert!';
   }
 
 }
@@ -98,7 +98,7 @@ function saveNotifDB($conn,$title,$body)
 
 function getRegTokens($conn)
 {
-  $object = new stdClass();
+  
   $token_array = array();
   $query = "SELECT accounts.registration_token FROM accounts INNER JOIN acc_levels ON accounts.AL_ID = acc_levels.AL_ID WHERE acc_levels.Access_Level = 'ADMIN'";
   $results = mysqli_query($conn,$query);
@@ -107,13 +107,14 @@ function getRegTokens($conn)
     while ($row = mysqli_fetch_assoc($results)) {
       if ($row['registration_token'] != NULL) {
         // code...
+        $object = new stdClass();
         $object->registration_token = $row['registration_token'];
         $object->success = false;
         array_push($token_array,$object);
       }
     }
   }
-
+  var_dump($token_array);
   return $token_array;
 }
 
