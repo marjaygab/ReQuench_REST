@@ -52,7 +52,6 @@ function firebaseHandler($title,$body,$registrationIds)
 function pushNotifs($title,$body,$token_arr)
 {
   // code...
-  echo "Token Array Size: " . sizeof($token_arr);
   for ($i=0; $i < sizeof($token_arr) ; $i++) {
     if (firebaseHandler($title,$body,$token_arr[$i]->registration_token)) {
       $token_arr[$i]->success = true;
@@ -114,7 +113,6 @@ function getRegTokens($conn)
       }
     }
   }
-  var_dump($token_array);
   return $token_array;
 }
 
