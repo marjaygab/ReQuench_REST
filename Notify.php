@@ -120,6 +120,7 @@ function getRegTokens($conn)
 
 date_default_timezone_set('Asia/Manila');
 $contents = file_get_contents('php://input');
+$response = array();
 if ($contents != null) {
   $data = json_decode($contents);
   $title = $data->{"title"};
@@ -127,7 +128,7 @@ if ($contents != null) {
   $token_arr = getRegTokens($conn);
   saveNotifDB($conn,$title,$body);
   pushNotifs($title,$body,$token_arr);
-
+  $response['Success'] = true;
 
   // if (verifyNotifSent($token_arr)) {
   //   saveNotifDB($conn,$title,$body);
@@ -144,6 +145,6 @@ else if (isset($_POST['Acc_ID']) && isset($_POST["registration_token"])) {
   die("An Error Occured");
 }
 
+echo json_encode($response);
 mysqli_close($conn);
-
  ?>
