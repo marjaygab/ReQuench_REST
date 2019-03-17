@@ -43,12 +43,15 @@ if ($contents != null) {
     if ($data->{'Command'} == 'Secret') {
         $response['Secret'] = generateSecret();
         $response['Success'] = true;
+        echo json_encode($response);
     }else if($data->{'Command'} == 'API'){
         $response['API'] = generateKey();
         $response['Success'] = true;
+        echo json_encode($response);
     }
 } else {
     $response['Success'] = false;
+    echo json_encode($response);
 }
 
 ?>
