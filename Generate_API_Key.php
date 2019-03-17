@@ -30,4 +30,20 @@ function generateSecret()
 
     return $secret_key;
 }
+
+$contents = file_get_contents('php://input');
+$response = array();
+if ($contents != null) {
+    $data = json_decode($contents);
+    if ($data->{'Command'} == 'Secret') {
+        $response['Secret'] = generateSecret();
+        $response['Success'] = true;
+    }else if($data->{'Command'} == 'API'){
+        $response['API'] = generateKey();
+        $response['Success'] = true;
+    }
+} else {
+    $response['Success'] = false;
+}
+
 ?>
