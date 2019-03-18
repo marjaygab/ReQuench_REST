@@ -8,7 +8,7 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-if (isset($_POST['Acc_ID'])) {
+function generateOTP($conn,$Acc_ID){
     $charactercollection = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'b', 'c',
         'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
         'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
@@ -36,6 +36,24 @@ if (isset($_POST['Acc_ID'])) {
     }
     $response['OTP'] = $otp;
     $response['OTP_String'] = $otp_string;
-    echo json_encode($response, JSON_PRETTY_PRINT);
+    return $response;   
 }
+
+$contents = file_get_contents('php://input');
+$response = array();
+if ($contents != null) {
+    $data = json_decode($contents);
+    $Acc_ID = $data->{"Acc_ID"};
+    $response = generateOTP($conn,$Acc_ID);
+    if ($response['Updated']) {
+        $response['Success'] = true;
+    } else {
+        $response['Success'] = false;
+    }
+    
+} else {
+    $response['Success'] = false;
+    echo json_encode($response);
+}
+echo json_encode($response, JSON_PRETTY_PRINT);
 mysqli_close($conn);
