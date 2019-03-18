@@ -18,7 +18,6 @@ function getHistory($conn,$account_id)
   // code...
   $rows = array();
   $response = array();
-  echo 'Your account id is: ' . $account_id;
   $query = "SELECT transaction_history.Transaction_ID,machine_unit.Machine_Location,transaction_history.Date,transaction_history.Time,transaction_history.Amount,transaction_history.Temperature
   ,transaction_history.Price_Computed,transaction_history.Remaining_Balance
   FROM transaction_history
