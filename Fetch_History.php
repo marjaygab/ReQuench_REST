@@ -16,53 +16,23 @@ require 'ConnectDB.php';
 function getHistory($conn,$account_id)
 {
   // code...
-
   $rows = array();
   $response = array();
+  echo 'Your account id is: ' . $account_id;
   $query = "SELECT transaction_history.Transaction_ID,machine_unit.Machine_Location,transaction_history.Date,transaction_history.Time,transaction_history.Amount,transaction_history.Temperature
-
-
   ,transaction_history.Price_Computed,transaction_history.Remaining_Balance
-
-
   FROM transaction_history
-
-
   INNER JOIN machine_unit ON transaction_history.MU_ID = machine_unit.MU_ID
-
-
   WHERE transaction_history.Acc_ID = '$account_id'";
-
-
-
-
-
   $result = mysqli_query($conn,$query);
-
-
-
-
-
   if (mysqli_num_rows($result) > 0) {
-
-
     while ($r = mysqli_fetch_assoc($result)) {
-
-
       $rows[] = $r;
-
-
     }
-
-
-
-
     $response['Transactions'] = $rows;
   }else{
     $response['Transactions'] = '';
   }
-
-
   $query = "SELECT * FROM purchase_history WHERE Acc_ID = '$account_id'";
   $results = mysqli_query($conn,$query);
 
@@ -77,6 +47,7 @@ function getHistory($conn,$account_id)
     }else{
       $response['Purchase'] = '';
     }
+
     echo json_encode($response,JSON_PRETTY_PRINT);
 
 }
