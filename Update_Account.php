@@ -12,6 +12,8 @@ function updateTable($conn,$response,$command,$data)
     case 'accounts':
       $account_id = $data->{"Acc_ID"};
       $id_number = $data->{"ID_Number"};
+      $firstname = $data->{"First_Name"};
+      $lastname = $data->{"Last_Name"};
       $user_name = $data->{"User_Name"};
       $query = "UPDATE accounts INNER
       JOIN acc_users ON accounts.Acc_ID = acc_users.Acc_ID
@@ -58,8 +60,8 @@ function updateTable($conn,$response,$command,$data)
     $response['Update_Success'] = true;
     echo json_encode($response,JSON_PRETTY_PRINT);
   }else{
-    echo mysqli_error($conn);
     $response['Update_Success'] = false;
+    echo json_encode($response,JSON_PRETTY_PRINT);
   }
 
 }
