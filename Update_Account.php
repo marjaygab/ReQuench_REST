@@ -44,6 +44,13 @@ function updateTable($conn,$response,$command,$data)
         $query = "UPDATE accounts
         SET accounts.Password = '$new_password'
         WHERE accounts.Acc_ID = $account_id";
+        if(mysqli_query($conn,$query)){
+          $response['Update_Success'] = true;
+          echo json_encode($response,JSON_PRETTY_PRINT);
+        }else{
+          $response['Update_Success'] = false;
+          echo json_encode($response,JSON_PRETTY_PRINT);
+        }
       }else{
         $response['Update_Success'] = false;
         $response['Error'] = 'Mismatch';
