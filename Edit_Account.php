@@ -14,8 +14,8 @@ function updateTable($conn,$response,$command,$data)
       $account_id = $data->{"Acc_ID"};
       $id_number = $data->{"ID_Number"};
       $user_name = $data->{"User_Name"};
-      $query = "UPDATE accounts INNER
-      JOIN acc_users ON accounts.Acc_ID = acc_users.Acc_ID
+      $query = "UPDATE accounts INNER JOIN acc_users 
+      ON accounts.Acc_ID = acc_users.Acc_ID
       SET accounts.User_Name = '$user_name',acc_users.ID_Number = '$id_number'
       WHERE accounts.Acc_ID = $account_id";
       break;
