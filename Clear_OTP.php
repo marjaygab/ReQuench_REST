@@ -12,19 +12,24 @@ require 'ConnectDB.php';
  header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 
 
-
-
-if(isset($_POST['Acc_ID'])){
-  $Acc_ID = $_POST['Acc_ID'];
-  $response = array("Updated"=>false);
+$contents = file_get_contents('php://input');
+$response = array();
+if ($contents != null) {
+    $data = json_decode($contents);
+    $Acc_ID = $data->{"Acc_ID"};
     $query = "UPDATE accounts SET OTP = null WHERE Acc_ID='$Acc_ID'";
     if (mysqli_query($conn,$query)) {
-        $response['Updated'] = true;
+        $response['Success'] = true;
     }else{
-        $response['Updated'] = false;
+        $response['Success'] = false;
     }
-  echo json_encode($response,JSON_PRETTY_PRINT);
+} else {
+    $response['Success'] = false;
 }
+echo json_encode($response, JSON_PRETTY_PRINT);
+mysqli_close($conn);
+
+
 mysqli_close($conn);
 
  ?>
