@@ -76,7 +76,7 @@ function updateTable($conn, $response, $command, $data)
             if (mysqli_num_rows($result) == 1) {
                 $query = "UPDATE accounts INNER
                 JOIN {$table_name} ON accounts.Acc_ID = {$table_name}.Acc_ID
-                SET {$table_name}.First_Name = '$firstname',{$table_name}.Last_Name = '$lastname',accounts.User_Name = '$user_name',accounts.Password = '$old_password',{$table_name}.ID_Number = '$id_number'
+                SET {$table_name}.First_Name = '$firstname',{$table_name}.Last_Name = '$lastname',accounts.User_Name = '$user_name',accounts.Password = '$new_password',{$table_name}.ID_Number = '$id_number'
                 WHERE accounts.Acc_ID = $account_id";
             } else {
                 $response['Update_Success'] = false;
