@@ -29,9 +29,6 @@ if ($contents != null) {
 echo json_encode($response, JSON_PRETTY_PRINT);
 mysqli_close($conn);
 
-
-mysqli_close($conn);
-
  ?>
 
 
