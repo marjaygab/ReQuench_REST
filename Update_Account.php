@@ -7,7 +7,18 @@ header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 function updateTable($conn, $response, $command, $data)
-{
+{       
+    $account_id = $data->{"Acc_ID"};
+    $Access_Level = findAccLevel($conn,$account_id);
+
+    if($Access_Level == 'ADMIN'){
+        $table_name = 'acc_admin';
+    }else if($Access_Level == 'cashier'){
+        $table_name = 'acc_cashier';
+    }else{
+        $table_name = 'acc_users';
+    }
+
     switch ($command) {
         case 'accounts':
             $account_id = $data->{"Acc_ID"};
@@ -15,10 +26,10 @@ function updateTable($conn, $response, $command, $data)
             $firstname = $data->{"First_Name"};
             $lastname = $data->{"Last_Name"};
             $user_name = $data->{"User_Name"};
-            $query = "UPDATE accounts INNER JOIN acc_users 
-            ON accounts.Acc_ID = acc_users.Acc_ID
-            SET accounts.User_Name = '$user_name' ,acc_users.ID_Number = '$id_number'
-            ,acc_users.First_Name = '$firstname' ,acc_users.Last_Name = '$lastname'
+            $query = "UPDATE accounts INNER JOIN {$table_name} 
+            ON accounts.Acc_ID = {$table_name}.Acc_ID
+            SET accounts.User_Name = '$user_name' ,{$table_name}.ID_Number = '$id_number'
+            ,{$table_name}.First_Name = '$firstname' ,{$table_name}.Last_Name = '$lastname'
             WHERE accounts.Acc_ID = $account_id";
             break;
         case 'email':
@@ -31,9 +42,9 @@ function updateTable($conn, $response, $command, $data)
         case 'phone':
             $account_id = $data->{"Acc_ID"};
             $phone = $data->{"Phone"};
-            $query = "UPDATE acc_users
-      SET acc_users.Phone = '$phone'
-      WHERE acc_users.Acc_ID = $account_id";
+            $query = "UPDATE {$table_name}
+      SET {$table_name}.Phone = '$phone'
+      WHERE {$table_name}.Acc_ID = $account_id";
             break;
         case 'password':
             $account_id = $data->{"Acc_ID"};
@@ -64,8 +75,8 @@ function updateTable($conn, $response, $command, $data)
             $result = mysqli_query($conn, $my_query);
             if (mysqli_num_rows($result) == 1) {
                 $query = "UPDATE accounts INNER
-                JOIN acc_users ON accounts.Acc_ID = acc_users.Acc_ID
-                SET acc_users.First_Name = '$firstname',acc_users.Last_Name = '$lastname',accounts.User_Name = '$user_name',accounts.Password = '$old_password',acc_users.ID_Number = '$id_number'
+                JOIN {$table_name} ON accounts.Acc_ID = {$table_name}.Acc_ID
+                SET {$table_name}.First_Name = '$firstname',{$table_name}.Last_Name = '$lastname',accounts.User_Name = '$user_name',accounts.Password = '$old_password',{$table_name}.ID_Number = '$id_number'
                 WHERE accounts.Acc_ID = $account_id";
             } else {
                 $response['Update_Success'] = false;
@@ -87,6 +98,27 @@ function updateTable($conn, $response, $command, $data)
         echo json_encode($response, JSON_PRETTY_PRINT);
     }
 
+}
+
+
+function findAccLevel($conn,$Acc_ID)
+{
+    $query = "SELECT AL_ID FROM accounts WHERE Acc_ID = '$Acc_ID'";
+    $results = mysqli_query($conn,$query);
+
+    if (mysqli_num_rows($results) > 0) {
+        $row = mysqli_fetch_assoc($results);
+        $AL_ID = $row['AL_ID'];
+
+        if ($AL_ID == 1) {
+            return 'ADMIN';
+        } else if($AL_ID == 2){
+            return 'CASHIER';
+        }else {
+            return 'USER';
+        }
+        
+    }
 }
 
 $contents = file_get_contents('php://input');

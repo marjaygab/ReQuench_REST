@@ -18,7 +18,7 @@ function renewAPIKey($conn,$Secret_Key)
         while(true){
             $API_KEY = generateKey();
             if (!checkApi($conn,$API_KEY)['Success']) {
-                $query = "UPDATE machine_unit SET API_KEY = '$API_KEY'";
+                $query = "UPDATE machine_unit SET API_KEY = '$API_KEY' WHERE MU_ID = $MU_ID";
                 if(mysqli_query($conn,$query)){
                     break;
                 };
