@@ -114,7 +114,7 @@ function getNotifs($conn, $account_id)
           $notif_list[$i]->Seen = false;
         }
       }
-      usort($notif_list,"ascendingDateTime");
+      usort($notif_list,"descendingDateTime");
       $response['Notifications'] = $notif_list;
       $response['Success'] = true;
     }else{
