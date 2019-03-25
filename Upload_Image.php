@@ -2,6 +2,7 @@
 
 
 require 'ConnectDB.php';
+header('Content-Type: application/json; charset=utf-8');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 1000");
@@ -11,64 +12,23 @@ header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 
 function upload($conn,$account_id,$image_string,$file_name)
 {
-
-
   $relative_path = "/user_images/".$file_name;
   $file_path = __DIR__ . $relative_path;
   $binary = base64_decode($image_string);
-
-
-  header('Content-Type: application/json; charset=utf-8');
-
-
   $file = fopen($file_path,'wb');
-
-
   fwrite($file,$binary);
-
-
   fclose($file);
-
-
-
-
-
   $query = "SELECT * from acc_images WHERE Acc_ID = '$account_id'";
-
-
-
-
-
   $result = mysqli_query($conn,$query);
-
-
-
-
-
   if (mysqli_num_rows($result) == 1) {
-
-
     $query = "UPDATE acc_images SET Image_Path= '$relative_path' WHERE Acc_ID='$account_id'";
-
-
   }else{
-
-
     $query = "INSERT INTO acc_images (Acc_ID,Image_Path) VALUES ('$account_id','$relative_path')";
-
-
   }
-
-
-
   $response = array();
 
   if (!mysqli_query($conn,$query)) {
-
-
     throw new Exception("Error Processing Request", 1);
-
-
     $response['Update_Success'] = false;
     echo json_encode($response,JSON_PRETTY_PRINT);
   }
