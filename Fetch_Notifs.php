@@ -28,6 +28,27 @@ function descendingdateTime($NOTIF1,$NOTIF2){
   }
 }
 
+function ascendingdateTime($NOTIF1,$NOTIF2){
+  $date1 = $NOTIF1->Date_Posted;
+  $date2 = $NOTIF2->Date_Posted;
+
+  if (($date1-$date2) < 0) {
+    return -1;
+  }else if (($date1-$date2) > 0) {
+    return 1;
+  }else{
+    $time1 = $NOTIF1->Time_Posted;
+    $time2 = $NOTIF2->Time_Posted;
+    if (($time1-$time2) < 0) {
+      return -1;
+    }else if (($time1-$time2) > 0) {
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+}
+
 
 function getNotifs($conn, $account_id)
 {
@@ -93,7 +114,7 @@ function getNotifs($conn, $account_id)
           $notif_list[$i]->Seen = false;
         }
       }
-      usort($notif_list,"descendingDateTime");
+      usort($notif_list,"ascendingDateTime");
       $response['Notifications'] = $notif_list;
       $response['Success'] = true;
     }else{
