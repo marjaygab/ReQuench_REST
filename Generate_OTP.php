@@ -20,7 +20,6 @@ function generateOTP($conn,$Acc_ID){
         array_push($otp, $charactercollection[$index]);
         $otp_string .= $charactercollection[$index];
     }
-    $Acc_ID = $_POST['Acc_ID'];
     $query = "SELECT OTP FROM accounts WHERE OTP = '$otp_string'";
     $result = mysqli_query($conn, $query);
     $response = array("Updated" => false);
