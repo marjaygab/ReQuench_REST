@@ -61,6 +61,26 @@ if ($contents != null) {
         $response = array();
         $response['Success'] = true;
         $response['User_Information'] = $row;
+
+        $query = "SELECT Image_Path FROM acc_images WHERE Acc_ID = '$Acc_ID'";
+        $result = mysqli_query($conn,$query);
+
+        if (mysqli_num_rows($result) == 1) {
+          while ($row = mysqli_fetch_assoc($result)) {
+            $file_path = $row["Image_Path"];
+          }
+
+          $response["file_path"] =  $file_path;
+          $file_path = "https://requench-rest.herokuapp.com" . $file_path;
+          $response["image"] = base64_encode(file_get_contents($file_path));
+          $response["Success"] = "true";
+        }else{
+          //No Image Exists for specific User. Display Default Image
+          $response["Success"] = "false";
+        }
+
+
+
         $json_string = json_encode($response, JSON_PRETTY_PRINT);
         echo $json_string;
     }
