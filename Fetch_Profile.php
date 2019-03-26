@@ -60,7 +60,7 @@ if ($contents != null) {
         }
         $response = array();
         $response['Success'] = true;
-        $response['User_Information'] = $row;
+        $response['Account_Details'] = $row;
 
         $query = "SELECT Image_Path FROM acc_images WHERE Acc_ID = '$Acc_ID'";
         $result = mysqli_query($conn,$query);
