@@ -75,7 +75,9 @@ if (isset($_POST['User_name']) && isset($_POST['Password'])) {
       while ($row = mysqli_fetch_assoc($result)) {
         $file_path = $row["Image_Path"];
       }
-      $response["file_path"] = "https://requench-rest.herokuapp.com" . $file_path;
+
+      $response["file_path"] =  $file_path;
+      $file_path = "https://requench-rest.herokuapp.com" . $file_path;
       $response["image"] = base64_encode(file_get_contents($file_path));
       $response["Success"] = "true";
     }else{
