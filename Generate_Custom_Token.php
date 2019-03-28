@@ -1,6 +1,6 @@
 <?php
 // Requires: composer require firebase/php-jwt
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 use Firebase\JWT\JWT;
 
 // Get your service account's email address and private key from the JSON key file
