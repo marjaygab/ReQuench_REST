@@ -1,6 +1,6 @@
 <?php
 // Requires: composer require firebase/php-jwt
-use Firebase\JWT\JWT;
+require __DIR__ . '/vendor/autoload.php';
 
 // Get your service account's email address and private key from the JSON key file
 $service_account_email = "firebase-adminsdk-ix063@requenchweb2019.iam.gserviceaccount.com";
