@@ -7,8 +7,8 @@ require 'ConnectDB.php';
  header("Access-Control-Max-Age: 1000");
  header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
  header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-function updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date,
-$Current_Water_Level,$STATUS,$Price_Per_ML,$Critical_Level,$Critical_Level,$Notify_Admin)
+function updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date,$STATUS,$Price_Per_ML
+,$Critical_Level,$Notify_Admin,$Current_Water_Level)
 {
   // code...
     $rows = array();
@@ -41,8 +41,8 @@ if ($contents != null) {
   $Price_Per_ML = $data->{"price_per_ml"};
   $Critical_Level = $data->{"critical_level"};
   $Notify_Admin = $data->{"notify_admin"};
-  updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date,
-  $Current_Water_Level,$STATUS,$Price_Per_ML,$Critical_Level,$Critical_Level,$Notify_Admin);
+  updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date
+  ,$STATUS,$Price_Per_ML,$Critical_Level,$Notify_Admin,$Current_Water_Level);
   
 }else{
   die("An Error Occured");
