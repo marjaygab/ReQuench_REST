@@ -7,20 +7,20 @@ header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 $response = array();
-$trans_query = "SELECT transaction_history.Acc_ID,machine_unit.Machine_Location,transaction_history.Date,transaction_history.Time,transaction_history.Amount,transaction_history.Temperature
+$trans_query = "SELECT transaction_history.Acc_ID,transaction_history.Transaction_ID,machine_unit.Machine_Location,transaction_history.Date,transaction_history.Time,transaction_history.Amount,transaction_history.Temperature
 ,transaction_history.Price_Computed
 FROM transaction_history
 INNER JOIN machine_unit ON transaction_history.MU_ID = machine_unit.MU_ID";
 
-$trans_query2 = "SELECT transaction_history_unrec.UU_ID,machine_unit.Machine_Location,transaction_history_unrec.Date,transaction_history_unrec.Time,transaction_history_unrec.Amount,transaction_history_unrec.Temperature
+$trans_query2 = "SELECT transaction_history_unrec.UU_ID,transaction_history_unrec.Transaction_ID,machine_unit.Machine_Location,transaction_history_unrec.Date,transaction_history_unrec.Time,transaction_history_unrec.Amount,transaction_history_unrec.Temperature
 ,transaction_history_unrec.Price_Computed
 FROM transaction_history_unrec
 INNER JOIN machine_unit ON transaction_history_unrec.MU_ID = machine_unit.MU_ID";
 
-$purch_query = "SELECT purchase_history.Acc_ID,purchase_history.Date,purchase_history.Time,purchase_history.Amount,purchase_history.Price_Computed
+$purch_query = "SELECT purchase_history.Acc_ID,purchase_history.Purchase_ID,purchase_history.Date,purchase_history.Time,purchase_history.Amount,purchase_history.Price_Computed
 FROM purchase_history";
 
-$purch_query2 = "SELECT purchase_history_unrec.UU_ID,purchase_history_unrec.Date,purchase_history_unrec.Time,purchase_history_unrec.Amount,purchase_history_unrec.Price_Computed
+$purch_query2 = "SELECT purchase_history_unrec.UU_ID,purchase_history.Purchase_ID,purchase_history_unrec.Date,purchase_history_unrec.Time,purchase_history_unrec.Amount,purchase_history_unrec.Price_Computed
 FROM purchase_history_unrec";
 
 $trans_result = mysqli_query($conn,$trans_query);
