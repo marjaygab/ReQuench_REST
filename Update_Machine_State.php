@@ -8,7 +8,7 @@ require 'ConnectDB.php';
  header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
  header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 function updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date,
-$Current_Water_Level,$STATUS,$Price_Per_ML,$Critical_Level,$Critical_Level,$Notify_Admin);
+$Current_Water_Level,$STATUS,$Price_Per_ML,$Critical_Level,$Critical_Level,$Notify_Admin)
 {
   // code...
     $rows = array();
