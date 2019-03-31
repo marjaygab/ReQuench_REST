@@ -8,12 +8,12 @@ header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Ca
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 $response = array();
 $trans_query = "SELECT transaction_history.Acc_ID,transaction_history.Transaction_ID,machine_unit.Machine_Location,transaction_history.Date,transaction_history.Time,transaction_history.Amount,transaction_history.Temperature
-,transaction_history.Price_Computed
+,transaction_history.Price_Computed,transaction_history.Remaining_Balance;
 FROM transaction_history
 INNER JOIN machine_unit ON transaction_history.MU_ID = machine_unit.MU_ID";
 
 $trans_query2 = "SELECT transaction_history_unrec.UU_ID,transaction_history_unrec.Transaction_ID,machine_unit.Machine_Location,transaction_history_unrec.Date,transaction_history_unrec.Time,transaction_history_unrec.Amount,transaction_history_unrec.Temperature
-,transaction_history_unrec.Price_Computed
+,transaction_history_unrec.Price_Computed,transaction_history_unrec.Remaining_Balance;
 FROM transaction_history_unrec
 INNER JOIN machine_unit ON transaction_history_unrec.MU_ID = machine_unit.MU_ID";
 
