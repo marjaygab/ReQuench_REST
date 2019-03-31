@@ -30,7 +30,7 @@ $Current_Water_Level,$STATUS,$Price_Per_ML,$Critical_Level,$Critical_Level,$Noti
 $contents = file_get_contents('php://input');
 if ($contents != null) {
   $data = json_decode($contents);
-  $MU_ID = $data->{"MU_ID"};
+  $MU_ID = $data->{"mu_id"};
   $Model_Number = $data->{"Model_Number"};
   $API_KEY = $data->{"api_key"};
   $Machine_Location = $data->{"location"};
