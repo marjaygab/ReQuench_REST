@@ -68,7 +68,7 @@ function updateBalanceRecorded($conn,$Acc_ID,$Load)
 
 function updateWaterLevel($conn,$MU_ID,$Current_Water_Level)
 {
-    $query = "UPDATE machine_unit SET Current_Water_Level = '$Current_Water_Level'";
+    $query = "UPDATE machine_unit SET Current_Water_Level = '$Current_Water_Level' WHERE MU_ID = $MU_ID";
     if (mysqli_query($conn,$query)) {
         return true;
     } else {
