@@ -37,10 +37,24 @@ if ($contents != null) {
   $Date_of_Purchase = $data->{"date_of_purchase"};
   $Last_Maintenance_Date = $data->{"last_maintenance_date"};
   $Current_Water_Level = $data->{"current_water_level"};
+
   $STATUS = $data->{"status"};
+  if($STATUS == 'online' || $STATUS == 'ONLINE'){
+      $STATUS = 'ONLINE';
+  }else{
+      $STATUS = 'OFFLINE';
+  }
+
   $Price_Per_ML = $data->{"price_per_ml"};
   $Critical_Level = $data->{"critical_level"};
   $Notify_Admin = $data->{"notify_admin"};
+
+  if($Notify_Admin){
+    $Notify_Admin = 1;
+  }else{
+    $Notify_Admin = 0;
+  }
+
   updateMachineState($conn,$MU_ID,$Model_Number,$API_KEY,$Machine_Location,$Date_of_Purchase,$Last_Maintenance_Date
   ,$STATUS,$Price_Per_ML,$Critical_Level,$Notify_Admin,$Current_Water_Level);
   
