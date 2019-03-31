@@ -10,7 +10,7 @@ $response = array();
 $query = "SELECT purchase_history.Acc_ID,purchase_history.Date,purchase_history.Time,purchase_history.Amount,purchase_history.Price_Computed
 FROM purchase_history";
 
-$query2 = "SELECT purchase_history_unrec.Acc_ID,purchase_history_unrec.Date,purchase_history_unrec.Time,purchase_history_unrec.Amount,purchase_history_unrec.Price_Computed
+$query2 = "SELECT purchase_history_unrec.UU_ID,purchase_history_unrec.Date,purchase_history_unrec.Time,purchase_history_unrec.Amount,purchase_history_unrec.Price_Computed
 FROM purchase_history_unrec";
 
 $result = mysqli_query($conn,$query);
