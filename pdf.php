@@ -1,5 +1,5 @@
 <?php
-include_once 'connection_1.php';
+require 'ConnectDB.php';
 require_once "libs/fpdf.php";
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Ca
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 
 // Begin configuration
-function getpdf($connString, $start_date, $end_date)
+function getpdf($conn, $start_date, $end_date)
 {
 
     //lagay mo nalang ang $start_date saka $end_date na variable sa mga queries mo.
@@ -76,32 +76,28 @@ Create the title page
 /**
 Create the page header, main heading, and intro text
  **/
-    $db = new dbObj();
-
-    $connString = $db->getConnstring();
-
-    $result = mysqli_query($connString,
+    $result = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP)
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $return_rows = mysqli_num_rows($result);
 
-    $result1 = mysqli_query($connString,
+    $result1 = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Machine_Location= 'Mabini Building'
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $getmabini = mysqli_num_rows($result1);
 
-    $result2 = mysqli_query($connString,
+    $result2 = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Machine_Location= 'Chez Rafael Building'
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $getchez = mysqli_num_rows($result2);
 
-    $result3 = mysqli_query($connString,
+    $result3 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as hot FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Temperature= 'HOT'")
@@ -109,7 +105,7 @@ Create the page header, main heading, and intro text
     $gethot = mysqli_num_rows($result3);
     $row1 = mysqli_fetch_array($result3);
 
-    $result4 = mysqli_query($connString,
+    $result4 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as cold FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Temperature= 'COLD'")
@@ -185,11 +181,8 @@ Create the page header, main heading, and intro text
     $pdf->Output();
 }
 
-$contents = file_get_contents('php://input');
-$response = array();
-if ($contents != null) {
-    $data = json_decode($contents);
-    $start_date = $data->{"Start_Date"};
-    $end_date = $data->{"End_Date"};
-    getpdf($connString, $start_date, $end_date);
+if (isset($_GET['Start_Date']) && isset($_GET['End_Date'])) {
+    $start_date = $_GET['Start_Date'];
+    $end_date = $_GET['End_Date'];
+    getpdf($conn,$start_date,$end_date);
 }
