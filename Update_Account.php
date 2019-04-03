@@ -113,6 +113,29 @@ function updateTable($conn, $response, $command, $data)
                 WHERE accounts.Acc_ID = $account_id";
             }else{
                 //transfer table
+                if($access_level == 'ADMIN'){
+                    $new_table = 'acc_admin';
+                    $access_id = 1;
+                }else if ($access_level == 'CASHIER') {
+                    $new_table = 'acc_cashier';
+                    $access_id = 2;
+                }else{
+                    $new_table = 'acc_users';
+                    $access_id = 3;
+                }
+
+                $query = "INSERT INTO {$new_table} (Acc_ID,ID_Number,First_Name,Last_Name,Balance)
+                VALUES ('$account_id','$id_number','$firstname','$lastname','$balance')";
+                if (mysqli_query($conn,$query)) {
+                    $query = "DELETE FROM {$table_name} WHERE Acc_ID= '$account_id'";
+                    if (mysqli_query($conn,$query)) {
+                        $query = "UPDATE accounts SET AL_ID = '$access_id' WHERE Acc_ID='$account_id'";
+                    }else {
+                        $query = '';
+                    }
+                }else{
+                    $query = '';
+                }
             }
             
 
