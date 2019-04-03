@@ -76,99 +76,74 @@ Create the title page
 /**
 Create the page header, main heading, and intro text
  **/
-    $result = mysqli_query($conn,
+    $transaction = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date
-    ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
-    $return_rows = mysqli_num_rows($result);
+    ORDER BY Transaction_ID ASC") or die("database error:" . mysqli_error($connString));
+    $gettransaction_rows = mysqli_num_rows($transaction);
 
-    $result1 = mysqli_query($conn,
-        "SELECT * FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN $start_date AND $end_date AND Machine_Location= 'Mabini Building'
-    ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
-    $getmabini = mysqli_num_rows($result1);
-
-    $result2 = mysqli_query($conn,
-        "SELECT * FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN $start_date AND $end_date AND Machine_Location= 'Chez Rafael Building'
-    ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
-    $getchez = mysqli_num_rows($result2);
-
-    $result3 = mysqli_query($conn,
+    $hot = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as hot FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'HOT'")
     or die("database error:" . mysqli_error($connString));
-    $gethot = mysqli_num_rows($result3);
-    $row1 = mysqli_fetch_array($result3);
+    $gethot = mysqli_num_rows($hot);
+    $row1 = mysqli_fetch_array($hot);
 
-    $result4 = mysqli_query($conn,
+    $cold = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as cold FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'COLD'")
     or die("database error:" . mysqli_error($connString));
-    $getcold = mysqli_num_rows($result4);
-    $row2 = mysqli_fetch_array($result4);
+    $getcold = mysqli_num_rows($cold);
+    $row2 = mysqli_fetch_array($cold);
 
     $pdf->AddPage();
     $pdf->SetTextColor($headerColour[0], $headerColour[1], $headerColour[2]);
     $pdf->SetFont('Arial', '', 17);
-    $pdf->Write(19, "Report for the month of ");
-    $pdf->Write(19, date('F'));
+
     $pdf->Ln(16);
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
-    $pdf->Write(6, $return_rows);
-    $pdf->Write(6, " transaction/s for the month of ");
-    $pdf->Write(6, date('F'));
+    $pdf->Write(6, $gettransaction_rows);
+    $pdf->Write(6, " transaction/s from ");
+    $pdf->Write(6, $start_date);
+    $pdf->Write(6, " to ");
+    $pdf->Write(6, $end_date);
+    // $pdf->Write(6, date('F'));
     $pdf->Ln(12);
-    $pdf->Write(6, $row1['hot'] * 25);
+    $pdf->Write(6, $row1['hot'] * 250);
     $pdf->Write(6, " mL of cold water dispensed");
     $pdf->Ln(12);
-    $pdf->Write(6, $row2['cold'] * 25);
+    $pdf->Write(6, $row2['cold'] * 250);
     $pdf->Write(6, " mL of hot water dispensed");
+
+    
     $pdf->Ln(12);
-    $pdf->Write(6, "The device from Chez Rafael Building has completed a total of");
-    $pdf->Write(6, $getchez);
-    $pdf->Write(6, " transaction/s");
-    $pdf->Ln(12);
-    $pdf->Write(6, "The device from Mabini Building has completed a total of");
-    $pdf->Write(6, $getmabini);
-    $pdf->Write(6, " transaction/s");
-    $pdf->Ln(12);
-    $pdf->Write(6, "Total Monthly consumption");
+    $pdf->Write(6, "List of Transactions");
     $pdf->Ln(12);
 
 //header
 
     $count = 0;
 
-//foter page
+//footer page
 
     $pdf->AliasNbPages();
-
     $pdf->SetFont('Arial', '', 7);
-
     $pdf->Cell(15, 6, 'Tran ID', 1, 0, 'C');
-
     $pdf->Cell(15, 6, 'Acc ID', 1, 0, 'C');
-
     $pdf->Cell(40, 6, 'Machine Location', 1, 0, 'C');
-
     $pdf->Cell(25, 6, 'Date', 1, 0, 'C');
-
     $pdf->Cell(40, 6, 'Temperature', 1, 0, 'C');
-
     $pdf->Cell(25, 6, 'Price Computed', 1, 0, 'C');
 
     $pdf->Ln();
 
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($transaction)) {
         $count = $count + 1;
         $pdf->Cell(15, 6, $row['Transaction_ID'], 1, 0, 'C');
         $pdf->Cell(15, 6, $row['Acc_ID'], 1, 0, 'C');
@@ -178,6 +153,7 @@ Create the page header, main heading, and intro text
         $pdf->Cell(25, 6, $row['Price_Computed'], 1, 0, 'C');
         $pdf->Ln();
     }
+
     $pdf->Output();
 }
 
