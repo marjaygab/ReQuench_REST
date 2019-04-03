@@ -97,7 +97,6 @@ function updateTable($conn, $response, $command, $data)
             $access_level = $data ->{"Access_Level"};
             $balance = $data ->{"Balance"};
 
-            
             if ($Access_Level == $access_level) {
                 //just update
                 $query = "UPDATE accounts 
@@ -109,10 +108,9 @@ function updateTable($conn, $response, $command, $data)
                 accounts.Password = '$new_password',
                 {$table_name}.ID_Number = '$id_number',
                 accounts.RFID_ID = '$rfid_id',
-                {$table_name}.Email = '$email',
+                accounts.Email = '$email',
                 {$table_name}.Balance = '$balance'
                 WHERE accounts.Acc_ID = $account_id";
-
             }else{
                 //transfer table
             }
