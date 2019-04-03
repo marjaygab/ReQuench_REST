@@ -77,12 +77,11 @@ Create the title page
 Create the page header, main heading, and intro text
  **/
     $transaction = mysqli_query($conn,
-    "SELECT * FROM transaction_history
+        "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date
     ORDER BY Transaction_ID ASC") or die("database error:" . mysqli_error($connString));
     $gettransaction_rows = mysqli_num_rows($transaction);
-
 
     $result3 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as hot FROM transaction_history
@@ -134,21 +133,13 @@ Create the page header, main heading, and intro text
 //footer page
 
     $pdf->AliasNbPages();
-
     $pdf->SetFont('Arial', '', 7);
-
     $pdf->Cell(15, 6, 'Tran ID', 1, 0, 'C');
-
     $pdf->Cell(15, 6, 'Acc ID', 1, 0, 'C');
-
     $pdf->Cell(40, 6, 'Machine Location', 1, 0, 'C');
-
     $pdf->Cell(25, 6, 'Date', 1, 0, 'C');
-
     $pdf->Cell(40, 6, 'Temperature', 1, 0, 'C');
-
     $pdf->Cell(25, 6, 'Price Computed', 1, 0, 'C');
-
     $pdf->Ln();
 
     while ($row = mysqli_fetch_array($transaction)) {
@@ -161,8 +152,6 @@ Create the page header, main heading, and intro text
         $pdf->Cell(25, 6, $row['Price_Computed'], 1, 0, 'C');
         $pdf->Ln();
     }
-
-
     $pdf->Output();
 }
 
