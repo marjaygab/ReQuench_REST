@@ -25,7 +25,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "ReQuench: Monthly Sales and Inventory Report";
+    $reportName = "ReQuench: Sales and Inventory Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
@@ -79,28 +79,28 @@ Create the page header, main heading, and intro text
     $result = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP)
+    WHERE Date BETWEEN $start_date AND $end_date
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $return_rows = mysqli_num_rows($result);
 
     $result1 = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Machine_Location= 'Mabini Building'
+    WHERE Date BETWEEN $start_date AND $end_date AND Machine_Location= 'Mabini Building'
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $getmabini = mysqli_num_rows($result1);
 
     $result2 = mysqli_query($conn,
         "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Machine_Location= 'Chez Rafael Building'
+    WHERE Date BETWEEN $start_date AND $end_date AND Machine_Location= 'Chez Rafael Building'
     ORDER BY `transaction_history`.`Date` ASC, `transaction_history`.`Time` ASC") or die("database error:" . mysqli_error($connString));
     $getchez = mysqli_num_rows($result2);
 
     $result3 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as hot FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Temperature= 'HOT'")
+    WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'HOT'")
     or die("database error:" . mysqli_error($connString));
     $gethot = mysqli_num_rows($result3);
     $row1 = mysqli_fetch_array($result3);
@@ -108,7 +108,7 @@ Create the page header, main heading, and intro text
     $result4 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as cold FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE MONTH(DATE) = MONTH(CURRENT_TIMESTAMP) AND YEAR(DATE) = YEAR(CURRENT_TIMESTAMP) AND Temperature= 'COLD'")
+    WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'COLD'")
     or die("database error:" . mysqli_error($connString));
     $getcold = mysqli_num_rows($result4);
     $row2 = mysqli_fetch_array($result4);
