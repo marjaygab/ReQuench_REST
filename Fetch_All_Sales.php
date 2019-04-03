@@ -28,6 +28,9 @@ $trans_result2 = mysqli_query($conn,$trans_query2);
 $purch_result = mysqli_query($conn,$purch_query);
 $purch_result2 = mysqli_query($conn,$purch_query2);
 
+
+
+
 if (mysqli_num_rows($trans_result) > 0) {
     $rows = array();
     while ($r = mysqli_fetch_assoc($trans_result)) {
@@ -65,6 +68,7 @@ if (mysqli_num_rows($purch_result2) > 0) {
     $purch_rows2 = '';
 }
 
+$response['Success'] = true;
 echo json_encode($response,JSON_PRETTY_PRINT);
 mysqli_close($conn);
 

@@ -52,6 +52,21 @@ require 'ConnectDB.php';
    }
  }
 
+ function checkForDuplicateRFIDNum($conn,$RFID)
+ {
+   $query = "SELECT RFID_ID FROM accounts WHERE RFID_ID= '$RFID'";
+
+   $result = mysqli_query($conn,$query);
+   if (mysqli_num_rows($result) == 0) {
+     return true;
+   }else{
+     return false;
+   }
+ }
+
+
+
+
 $contents = file_get_contents('php://input');
 if ($contents != null) {
   $data = json_decode($contents);
@@ -69,6 +84,8 @@ if ($contents != null) {
       case 'USER_NAME':
         $response['Success'] = checkForDuplicateUserName($conn,$var);
         break;
+      case 'RFID_ID':
+      $response['Success'] = checkForDuplicateRFIDNum($conn,$var);
       default:
         break;
     }

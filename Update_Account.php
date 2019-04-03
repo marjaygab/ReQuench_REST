@@ -65,12 +65,12 @@ function updateTable($conn, $response, $command, $data)
             break;
         case 'accpass':
             $account_id = $data->{"Acc_ID"};
-            $new_password = $data->{"New_Password"};
-            $old_password = $data->{"Old_Password"};
             $id_number = $data->{"ID_Number"};
             $firstname = $data->{"First_Name"};
             $lastname = $data->{"Last_Name"};
             $user_name = $data->{"User_Name"};
+            $old_password = $data->{"Old_Password"};
+            $new_password = $data->{"New_Password"};
             $my_query = "SELECT Password FROM accounts WHERE Acc_ID = $account_id AND Password='$old_password'";
             $result = mysqli_query($conn, $my_query);
             if (mysqli_num_rows($result) == 1) {
@@ -84,6 +84,41 @@ function updateTable($conn, $response, $command, $data)
                 echo json_encode($response, JSON_PRETTY_PRINT);
                 return;
             }
+            break;
+        case 'all':
+            $account_id = $data->{"Acc_ID"};
+            $id_number = $data->{"ID_Number"};
+            $rfid_id = $data->{"RFID_ID"};
+            $firstname = $data->{"First_Name"};
+            $lastname = $data->{"Last_Name"};
+            $user_name = $data->{"User_Name"};
+            $new_password = $data->{"Password"};
+            $email = $data ->{"Email"};
+            $access_level = $data ->{"Access_Level"};
+            $balance = $data ->{"Balance"};
+
+            
+            if ($Access_Level == $access_level) {
+                //just update
+                $query = "UPDATE accounts 
+                INNER JOIN {$table_name} ON accounts.Acc_ID = {$table_name}.Acc_ID
+                SET 
+                {$table_name}.First_Name = '$firstname',
+                {$table_name}.Last_Name = '$lastname',
+                accounts.User_Name = '$user_name',
+                accounts.Password = '$new_password',
+                {$table_name}.ID_Number = '$id_number',
+                accounts.RFID_ID = '$rfid_id',
+                {$table_name}.Email = '$email',
+                {$table_name}.Balance = '$balance'
+                WHERE accounts.Acc_ID = $account_id";
+
+            }else{
+                //transfer table
+            }
+            
+
+
             break;
         default:
             // code...
