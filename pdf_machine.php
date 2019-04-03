@@ -12,9 +12,6 @@ header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 function getpdf($conn, $start_date, $end_date)
 {
 
-    //lagay mo nalang ang $start_date saka $end_date na variable sa mga queries mo.
-    //format ng $start_date at $end_date ay YYYY-MM-DD baka lang kailangan mo
-
     $textColour = array(0, 0, 0);
     $headerColour = array(100, 100, 100);
     $tableHeaderTopTextColour = array(255, 255, 255);
@@ -25,7 +22,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "ReQuench: Transaction Report";
+    $reportName = "ReQuench: Machine Activity Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
@@ -42,7 +39,6 @@ function getpdf($conn, $start_date, $end_date)
     $chartYStep = 20000;
     $timeframe = "( ".$start_date." to ".$end_date." )";
 
-    
     $chartColours = array(
         array(255, 100, 100),
         array(100, 255, 100),
@@ -77,39 +73,15 @@ Create the title page
     $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 16);
     $pdf->Cell(0, 15, $timeframe, 0, 0, 'C');
+
 /**
 Create the page header, main heading, and intro text
  **/
-    $transaction = mysqli_query($conn,
-        "SELECT * FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN '$start_date' AND '$end_date'
-    ORDER BY Transaction_ID ASC") or die("database error:" . mysqli_error($connString));
-    $gettransaction_rows = mysqli_num_rows($transaction);
-
-    $result3 = mysqli_query($conn,
-        "SELECT SUM(Price_Computed) as hot FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN '$start_date' AND '$end_date' AND Temperature= 'HOT'")
-    or die("database error:" . mysqli_error($connString));
-    $gethot = mysqli_num_rows($result3);
-    $row1 = mysqli_fetch_array($result3);
-
-    $result4 = mysqli_query($conn,
-        "SELECT SUM(Price_Computed) as cold FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN '$start_date' AND '$end_date' AND Temperature= 'COLD'")
-    or die("database error:" . mysqli_error($connString));
-    $getcold = mysqli_num_rows($result4);
-    $row2 = mysqli_fetch_array($result4);
-
-    $result5 = mysqli_query($conn,
-    "SELECT SUM(Price_Computed) as total FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN '$start_date' AND '$end_date'")
-    or die("database error:" . mysqli_error($connString));
-    $gettotal = mysqli_num_rows($result5);
-    $row3 = mysqli_fetch_array($result5);
+    $purchase= mysqli_query($conn,
+        "SELECT * FROM purchase_history
+        WHERE Date BETWEEN '$start_date' AND '$end_date'
+        ORDER BY Purchase_ID ASC") or die("database error:" . mysqli_error($connString));
+    $getpurchase_rows= mysqli_num_rows($purchase);
 
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
@@ -122,31 +94,20 @@ Create the page header, main heading, and intro text
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
-    $pdf->Write(6, $gettransaction_rows);
-    $pdf->Write(6, " transaction/s from ");
-    $pdf->Write(6, $start_date);
-    $pdf->Write(6, " to ");
-    $pdf->Write(6, $end_date);
-    // $pdf->Write(6, date('F'));
+    $pdf->Write(6, $getpurchase_rows);
+    $pdf->Write(6, " purchases/s.");
     $pdf->Ln(12);
-    $pdf->Write(6, "Hot Water Dispensed: ");
-    $pdf->Write(6, $row1['hot'] * 500);
-    $pdf->Write(6, "mL");
-    $pdf->Ln(12);
-    $pdf->Write(6, "Cold Water Dispensed: ");
-    $pdf->Write(6, $row2['cold'] * 500);
-    $pdf->Write(6, "mL");
-    $pdf->Ln(12);
-    $pdf->Write(6, "Total Water Dispensed: ");
-    $pdf->Write(6, $row3['total'] * 500);
-    $pdf->Write(6, "mL");
+    $pdf->Write(6, "Top Purchaser: ");
+    $pdf->Write(6, $getpurchase_rows);
+
     
+//header
+
     $pdf->Ln(12);
     $pdf->SetFont('Arial', 'B', 15);
-    $pdf->Cell(0, 15, "List of Transactions", 0, 0, 'C');
-    $pdf->Ln(15);
+    $pdf->Cell(0, 15, "List of Machines", 0, 0, 'C');
+    $pdf->Ln(12);
 
-//header
 
     $count = 0;
 
@@ -154,25 +115,26 @@ Create the page header, main heading, and intro text
 
     $pdf->AliasNbPages();
     $pdf->SetFont('Arial', 'B', 9);
-    $pdf->Cell(20, 6, 'Tran ID', 1, 0, 'C');
+    $pdf->Cell(20, 6, 'Purch ID', 1, 0, 'C');
     $pdf->Cell(20, 6, 'Acc ID', 1, 0, 'C');
-    $pdf->Cell(45, 6, 'Machine Location', 1, 0, 'C');
-    $pdf->Cell(30, 6, 'Date', 1, 0, 'C');
-    $pdf->Cell(45, 6, 'Temperature', 1, 0, 'C');
-    $pdf->Cell(30, 6, 'Price Computed', 1, 0, 'C');
+    $pdf->Cell(45, 6, 'Date', 1, 0, 'C');
+    $pdf->Cell(30, 6, 'Time', 1, 0, 'C');
+    $pdf->Cell(35, 6, 'Amount', 1, 0, 'C');
+    $pdf->Cell(40, 6, 'Price Computed', 1, 0, 'C');
     $pdf->Ln();
 
-    while ($row = mysqli_fetch_array($transaction)) {
+    while ($row = mysqli_fetch_array($purchase)) {
         $count = $count + 1;
         $pdf->SetFont('Arial', '', 8);
-        $pdf->Cell(20, 6, $row['Transaction_ID'], 1, 0, 'C');
+        $pdf->Cell(20, 6, $row['Purchase_ID'], 1, 0, 'C');
         $pdf->Cell(20, 6, $row['Acc_ID'], 1, 0, 'C');
-        $pdf->Cell(45, 6, $row['Machine_Location'], 1, 0, 'C');
-        $pdf->Cell(30, 6, $row['Date'], 1, 0, 'C');
-        $pdf->Cell(45, 6, $row['Temperature'], 1, 0, 'C');
-        $pdf->Cell(30, 6, $row['Price_Computed'], 1, 0, 'C');
+        $pdf->Cell(45, 6, $row['Date'], 1, 0, 'C');
+        $pdf->Cell(30, 6, $row['Time'], 1, 0, 'C');
+        $pdf->Cell(35, 6, $row['Amount'], 1, 0, 'C');
+        $pdf->Cell(40, 6, $row['Price_Computed'], 1, 0, 'C');
         $pdf->Ln();
     }
+
     $pdf->Output();
 }
 

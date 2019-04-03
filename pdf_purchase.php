@@ -22,7 +22,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "ReQuench: Sales and Inventory Report";
+    $reportName = "ReQuench: Purchase Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
@@ -37,6 +37,7 @@ function getpdf($conn, $start_date, $end_date)
     $chartXLabel = "Product";
     $chartYLabel = "2009 Sales";
     $chartYStep = 20000;
+    $timeframe = "( ".$start_date." to ".$end_date." )";
 
     $chartColours = array(
         array(255, 100, 100),
@@ -69,17 +70,29 @@ Create the title page
     $pdf->SetFont('Arial', 'B', 18);
     $pdf->Ln($reportNameYPos);
     $pdf->Cell(0, 15, $reportName, 0, 0, 'C');
+    $pdf->Ln(12);
+    $pdf->SetFont('Arial', '', 16);
+    $pdf->Cell(0, 15, $timeframe, 0, 0, 'C');
 
 /**
 Create the page header, main heading, and intro text
  **/
     $purchase= mysqli_query($conn,
         "SELECT * FROM purchase_history
-        WHERE Date BETWEEN $start_date AND $end_date
+        WHERE Date BETWEEN '$start_date' AND '$end_date'
         ORDER BY Purchase_ID ASC") or die("database error:" . mysqli_error($connString));
     $getpurchase_rows= mysqli_num_rows($purchase);
 
+    $toppurchaser= mysqli_query($conn,
+    "    SELECT *, COUNT(*)  FROM purchase_history 
+    RIGHT JOIN accounts ON purchase_history.Acc_ID= accounts.Acc_ID
+    ORDER BY COUNT(*)") or die("database error:" . mysqli_error($connString));
+    $gettop= mysqli_num_rows($toppurchaser);
+    $top = mysqli_fetch_array($toppurchaser);
+    
     $pdf->AddPage();
+    $pdf->SetFont('Arial', 'B', 14);
+    $pdf->Cell(0, 15, $reportName, 0, 0, 'C');
     $pdf->SetTextColor($headerColour[0], $headerColour[1], $headerColour[2]);
     $pdf->SetFont('Arial', '', 17);
 
@@ -89,16 +102,17 @@ Create the page header, main heading, and intro text
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
-    $pdf->Write(6, " purchases/s from ");
-    $pdf->Write(6, $start_date);
-    $pdf->Write(6, " to ");
-    $pdf->Write(6, $end_date);
+    $pdf->Write(6, " purchases/s.");
+    $pdf->Ln(12);
+    $pdf->Write(6, "Top Purchaser: ");
+    $pdf->Write(6, $top['User_Name']);
 
     
 //header
 
     $pdf->Ln(12);
-    $pdf->Write(6, "List of Purchases");
+    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->Cell(0, 15, "List of Purchases", 0, 0, 'C');
     $pdf->Ln(12);
 
 
@@ -107,23 +121,24 @@ Create the page header, main heading, and intro text
 //footer page
 
     $pdf->AliasNbPages();
-    $pdf->SetFont('Arial', '', 7);
-    $pdf->Cell(15, 6, 'Purch ID', 1, 0, 'C');
-    $pdf->Cell(15, 6, 'Acc ID', 1, 0, 'C');
-    $pdf->Cell(40, 6, 'Date', 1, 0, 'C');
-    $pdf->Cell(25, 6, 'Time', 1, 0, 'C');
-    $pdf->Cell(40, 6, 'Amount', 1, 0, 'C');
-    $pdf->Cell(25, 6, 'Price Computed', 1, 0, 'C');
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->Cell(20, 6, 'Purch ID', 1, 0, 'C');
+    $pdf->Cell(20, 6, 'Acc ID', 1, 0, 'C');
+    $pdf->Cell(45, 6, 'Date', 1, 0, 'C');
+    $pdf->Cell(30, 6, 'Time', 1, 0, 'C');
+    $pdf->Cell(35, 6, 'Amount', 1, 0, 'C');
+    $pdf->Cell(40, 6, 'Price Computed', 1, 0, 'C');
     $pdf->Ln();
 
     while ($row = mysqli_fetch_array($purchase)) {
         $count = $count + 1;
-        $pdf->Cell(15, 6, $row['Purchase_ID'], 1, 0, 'C');
-        $pdf->Cell(15, 6, $row['Acc_ID'], 1, 0, 'C');
-        $pdf->Cell(40, 6, $row['Date'], 1, 0, 'C');
-        $pdf->Cell(25, 6, $row['Time'], 1, 0, 'C');
-        $pdf->Cell(40, 6, $row['Amount'], 1, 0, 'C');
-        $pdf->Cell(25, 6, $row['Price_Computed'], 1, 0, 'C');
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(20, 6, $row['Purchase_ID'], 1, 0, 'C');
+        $pdf->Cell(20, 6, $row['Acc_ID'], 1, 0, 'C');
+        $pdf->Cell(45, 6, $row['Date'], 1, 0, 'C');
+        $pdf->Cell(30, 6, $row['Time'], 1, 0, 'C');
+        $pdf->Cell(35, 6, $row['Amount'], 1, 0, 'C');
+        $pdf->Cell(40, 6, $row['Price_Computed'], 1, 0, 'C');
         $pdf->Ln();
     }
 
