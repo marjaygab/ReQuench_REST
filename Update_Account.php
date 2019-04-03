@@ -13,7 +13,7 @@ function updateTable($conn, $response, $command, $data)
 
     if($Access_Level == 'ADMIN'){
         $table_name = 'acc_admin';
-    }else if($Access_Level == 'cashier'){
+    }else if($Access_Level == 'CASHIER'){
         $table_name = 'acc_cashier';
     }else{
         $table_name = 'acc_users';
