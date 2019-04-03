@@ -78,9 +78,11 @@ Create the title page
 Create the page header, main heading, and intro text
  **/
     $purchase= mysqli_query($conn,
-        "SELECT * FROM purchase_history
+        " SELECT * FROM transaction_history
+        RIGHT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
         WHERE Date BETWEEN '$start_date' AND '$end_date'
-        ORDER BY Purchase_ID ASC") or die("database error:" . mysqli_error($connString));
+        AND Machine_Location = 'Mabini Building'
+        ORDER BY Transaction_ID ASC") or die("database error:" . mysqli_error($connString));
     $getpurchase_rows= mysqli_num_rows($purchase);
 
     $pdf->AddPage();
@@ -95,17 +97,16 @@ Create the page header, main heading, and intro text
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
-    $pdf->Write(6, " purchases/s.");
+    $pdf->Write(6, " transactions/s.");
     $pdf->Ln(12);
-    $pdf->Write(6, "Top Purchaser: ");
-    $pdf->Write(6, $getpurchase_rows);
+ 
 
     
 //header
 
     $pdf->Ln(12);
     $pdf->SetFont('Arial', 'B', 15);
-    $pdf->Cell(0, 15, "List of Machines", 0, 0, 'C');
+    $pdf->Cell(0, 15, "Mabini Building Machine Transactions", 0, 0, 'C');
     $pdf->Ln(12);
 
 
@@ -115,7 +116,7 @@ Create the page header, main heading, and intro text
 
     $pdf->AliasNbPages();
     $pdf->SetFont('Arial', 'B', 9);
-    $pdf->Cell(20, 6, 'Purch ID', 1, 0, 'C');
+    $pdf->Cell(20, 6, 'Transaction_ID', 1, 0, 'C');
     $pdf->Cell(20, 6, 'Acc ID', 1, 0, 'C');
     $pdf->Cell(45, 6, 'Date', 1, 0, 'C');
     $pdf->Cell(30, 6, 'Time', 1, 0, 'C');
@@ -126,7 +127,7 @@ Create the page header, main heading, and intro text
     while ($row = mysqli_fetch_array($purchase)) {
         $count = $count + 1;
         $pdf->SetFont('Arial', '', 8);
-        $pdf->Cell(20, 6, $row['Purchase_ID'], 1, 0, 'C');
+        $pdf->Cell(20, 6, $row['Transaction_ID'], 1, 0, 'C');
         $pdf->Cell(20, 6, $row['Acc_ID'], 1, 0, 'C');
         $pdf->Cell(45, 6, $row['Date'], 1, 0, 'C');
         $pdf->Cell(30, 6, $row['Time'], 1, 0, 'C');
