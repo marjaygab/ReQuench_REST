@@ -77,27 +77,28 @@ Create the title page
 Create the page header, main heading, and intro text
  **/
     $transaction = mysqli_query($conn,
-        "SELECT * FROM transaction_history
+    "SELECT * FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date
     ORDER BY Transaction_ID ASC") or die("database error:" . mysqli_error($connString));
     $gettransaction_rows = mysqli_num_rows($transaction);
 
-    $hot = mysqli_query($conn,
+
+    $result3 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as hot FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'HOT'")
     or die("database error:" . mysqli_error($connString));
-    $gethot = mysqli_num_rows($hot);
-    $row1 = mysqli_fetch_array($hot);
+    $gethot = mysqli_num_rows($result3);
+    $row1 = mysqli_fetch_array($result3);
 
-    $cold = mysqli_query($conn,
+    $result4 = mysqli_query($conn,
         "SELECT SUM(Price_Computed) as cold FROM transaction_history
     LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
     WHERE Date BETWEEN $start_date AND $end_date AND Temperature= 'COLD'")
     or die("database error:" . mysqli_error($connString));
-    $getcold = mysqli_num_rows($cold);
-    $row2 = mysqli_fetch_array($cold);
+    $getcold = mysqli_num_rows($result4);
+    $row2 = mysqli_fetch_array($result4);
 
     $pdf->AddPage();
     $pdf->SetTextColor($headerColour[0], $headerColour[1], $headerColour[2]);
@@ -107,7 +108,7 @@ Create the page header, main heading, and intro text
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Write(6, "There are a total of1 ");
+    $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $gettransaction_rows);
     $pdf->Write(6, " transaction/s from ");
     $pdf->Write(6, $start_date);
@@ -121,6 +122,7 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, $row2['cold'] * 250);
     $pdf->Write(6, " mL of hot water dispensed");
 
+    
     $pdf->Ln(12);
     $pdf->Write(6, "List of Transactions");
     $pdf->Ln(12);
@@ -132,12 +134,19 @@ Create the page header, main heading, and intro text
 //footer page
 
     $pdf->AliasNbPages();
+
     $pdf->SetFont('Arial', '', 7);
+
     $pdf->Cell(15, 6, 'Tran ID', 1, 0, 'C');
+
     $pdf->Cell(15, 6, 'Acc ID', 1, 0, 'C');
+
     $pdf->Cell(40, 6, 'Machine Location', 1, 0, 'C');
+
     $pdf->Cell(25, 6, 'Date', 1, 0, 'C');
+
     $pdf->Cell(40, 6, 'Temperature', 1, 0, 'C');
+
     $pdf->Cell(25, 6, 'Price Computed', 1, 0, 'C');
 
     $pdf->Ln();
@@ -153,11 +162,12 @@ Create the page header, main heading, and intro text
         $pdf->Ln();
     }
 
+
     $pdf->Output();
 }
 
 if (isset($_GET['Start_Date']) && isset($_GET['End_Date'])) {
     $start_date = $_GET['Start_Date'];
     $end_date = $_GET['End_Date'];
-    getpdf($conn, $start_date, $end_date);
+    getpdf($conn,$start_date,$end_date);
 }
