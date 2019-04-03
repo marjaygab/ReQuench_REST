@@ -107,7 +107,7 @@ Create the page header, main heading, and intro text
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Write(6, "There are a total of ");
+    $pdf->Write(6, "There are a total of1 ");
     $pdf->Write(6, $gettransaction_rows);
     $pdf->Write(6, " transaction/s from ");
     $pdf->Write(6, $start_date);
@@ -121,7 +121,6 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, $row2['cold'] * 250);
     $pdf->Write(6, " mL of hot water dispensed");
 
-    
     $pdf->Ln(12);
     $pdf->Write(6, "List of Transactions");
     $pdf->Ln(12);
@@ -160,5 +159,5 @@ Create the page header, main heading, and intro text
 if (isset($_GET['Start_Date']) && isset($_GET['End_Date'])) {
     $start_date = $_GET['Start_Date'];
     $end_date = $_GET['End_Date'];
-    getpdf($conn,$start_date,$end_date);
+    getpdf($conn, $start_date, $end_date);
 }
