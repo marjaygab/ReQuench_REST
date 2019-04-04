@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Ca
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 function removeMachine($conn,$MU_ID)
 {
-    $query1 = "DELETE FROM machine_unit WHERE MU_ID = $MU_ID";
+    $query1 = "DELETE FROM machine_unit WHERE MU_ID = '$MU_ID'";
     if (mysqli_query($conn,$query1)) {
         return true;
     }else{
@@ -17,13 +17,27 @@ function removeMachine($conn,$MU_ID)
 
 }
 
+function removeSecretEntry($conn,$MU_ID)
+{
+    $query1 = "DELETE FROM secret_list WHERE MU_ID = '$MU_ID'";
+    if (mysqli_query($conn,$query1)) {
+        return true;
+    }else{
+        return false;
+    }
+}
+
 $contents = file_get_contents('php://input');
 if ($contents != null) {
     $data = json_decode($contents);
     $MU_ID = $data->{"MU_ID"};
     $response = array();
     if (removeMachine($conn,$MU_ID)) {
-        $response['Success'] = true;
+        if (removeSecretEntry($conn,$MU_ID)) {
+            $response['Success'] = true;    
+        }else{
+            $response['Success'] = false;    
+        }        
     }else{
         $response['Success'] = false;
     }
