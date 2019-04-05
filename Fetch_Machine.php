@@ -15,10 +15,8 @@ function getMachine($conn,$MU_ID)
     $result = mysqli_query($conn,$query);
     if (mysqli_num_rows($result) == 1) {
         $rows = array();
-        while ($r = mysqli_fetch_assoc($result)) {
-            $rows[] = $r;
-        }
-        $response['Machine'] = $rows;
+        $r = mysqli_fetch_assoc($result);
+        $response['Machine'] = $r;
         $response['Success'] = true;
     }else{
         $response['Machines'] = '';
