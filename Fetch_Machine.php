@@ -31,7 +31,7 @@ function getMachine($conn,$MU_ID)
 $contents = file_get_contents('php://input');
 if ($contents != null) {
   $data = json_decode($contents);
-  $Acc_ID = $data->{"MU_ID"};
+  $MU_ID = $data->{"MU_ID"};
   getMachine($conn,$MU_ID);
 }else{
   die("An Error Occured");
