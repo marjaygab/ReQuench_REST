@@ -125,7 +125,7 @@
         $dt = new DateTime();
         $time = $dt->format("H:i:s");
         $date = $dt->format("Y-m-d");
-        $query = "INSERT INTO purchase_history_unrec (UU_ID,Amount,Price,Time,Date) VALUES ('$UU_ID','$Amount','$Price','$time','$date')";
+        $query = "INSERT INTO purchase_history_unrec (UU_ID,Amount,Price_Computed,Time,Date) VALUES ('$UU_ID','$Amount','$Price','$time','$date')";
         if (mysqli_query($conn,$query)) {
             return true;
         } else {
