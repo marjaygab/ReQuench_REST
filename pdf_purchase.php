@@ -96,7 +96,7 @@ Create the page header, main heading, and intro text
     WHERE Date BETWEEN '$start_date' AND '$end_date'")
     or die("database error:" . mysqli_error($connString));
     $sales= mysqli_fetch_array($result5);
-    $sales_revenue = $sales['total'] * 10;
+
 
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
@@ -129,7 +129,7 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, " to ");
     $pdf->Write(6, $end_date);
     $pdf->Write(6, " is ");
-    $pdf->Write(6, $sales_revenue);
+    $pdf->Write(6, $sales['total'] * 10);
 //header
 
     $pdf->Ln(12);
