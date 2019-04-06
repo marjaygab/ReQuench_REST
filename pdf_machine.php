@@ -94,22 +94,21 @@ Create the page header, main heading, and intro text
     $pdf->Ln(16);
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetFont('Arial', '', 11);
+    $pdf->Write(6, "Issued by: ");
+    $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
+    $pdf->Ln(8);
     $pdf->Write(6, "Issued on: ");
-    $pdf->Write(6, date("F t y"));
-    $pdf->Ln(12);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(6, date("F j, Y"));
+    $pdf->Ln(15);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
     $pdf->Write(6, " transactions/s.");
-    $pdf->Ln(12);
- 
 
-    
 //header
 
     $pdf->Ln(12);
-    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->SetFont('Arial', 'B', 14);
     $pdf->Cell(0, 15, "Mabini Building Machine Transactions", 0, 0, 'C');
     $pdf->Ln(12);
 

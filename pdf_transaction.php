@@ -25,7 +25,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "ReQuench: Transaction Report";
+    $reportName = "Transaction Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
@@ -109,7 +109,7 @@ Create the page header, main heading, and intro text
     WHERE Date BETWEEN '$start_date' AND '$end_date'")
     or die("database error:" . mysqli_error($connString));
     $gettotal = mysqli_num_rows($result5);
-    $row3 = mysqli_fetch_array($result5);
+    $sales= mysqli_fetch_array($result5);
 
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
@@ -120,11 +120,13 @@ Create the page header, main heading, and intro text
     $pdf->Ln(16);
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetFont('Arial', '', 11);
+    $pdf->Write(6, "Issued by: ");
+    $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
+    $pdf->Ln(8);
     $pdf->Write(6, "Issued on: ");
-    $pdf->Write(6, date("F t y"));
-    $pdf->Ln(12);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(6, date("F j, Y"));
+    $pdf->Ln(15);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $gettransaction_rows);
     $pdf->Write(6, " transaction/s from ");
@@ -135,15 +137,23 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, "Hot Water Dispensed: ");
     $pdf->Write(6, $row1['hot'] * 500);
     $pdf->Write(6, "mL");
-    $pdf->Ln(12);
+    $pdf->Ln(8);
     $pdf->Write(6, "Cold Water Dispensed: ");
     $pdf->Write(6, $row2['cold'] * 500);
     $pdf->Write(6, "mL");
     $pdf->Ln(12);
     $pdf->Write(6, "Total Water Dispensed: ");
-    $pdf->Write(6, $row3['total'] * 500);
+    $pdf->Write(6, $sales['total'] * 500);
     $pdf->Write(6, "mL");
-    
+    $pdf->Ln(8);
+
+    $pdf->Write(6, "The Sales Revenue for ");
+    $pdf->Write(6, $start_date);
+    $pdf->Write(6, " to ");
+    $pdf->Write(6, $end_date);
+    $pdf->Write(6, " is ");
+    $pdf->Write(6, $sales['total'] * 250);
+
     $pdf->Ln(12);
     $pdf->SetFont('Arial', 'B', 15);
     $pdf->Cell(0, 15, "List of Transactions", 0, 0, 'C');

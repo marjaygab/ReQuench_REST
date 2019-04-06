@@ -89,14 +89,6 @@ Create the page header, main heading, and intro text
     ORDER BY COUNT(*)") or die("database error:" . mysqli_error($connString));
     $gettop= mysqli_num_rows($toppurchaser);
     $top = mysqli_fetch_array($toppurchaser);
-    
-    $result5 = mysqli_query($conn,
-    "SELECT SUM(Price_Computed) as total FROM transaction_history
-    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
-    WHERE Date BETWEEN '$start_date' AND '$end_date'")
-    or die("database error:" . mysqli_error($connString));
-    $sales= mysqli_fetch_array($result5);
-
 
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
@@ -120,13 +112,7 @@ Create the page header, main heading, and intro text
     $pdf->Ln(8);
     $pdf->Write(6, "Top Purchaser: ");
     $pdf->Write(6, $top['User_Name']);
-    $pdf->Ln(8);
-    $pdf->Write(6, "The Sales Revenue for ");
-    $pdf->Write(6, $start_date);
-    $pdf->Write(6, " to ");
-    $pdf->Write(6, $end_date);
-    $pdf->Write(6, " is ");
-    $pdf->Write(6, $sales['total'] * 10);
+
 //header
 
     $pdf->Ln(12);
