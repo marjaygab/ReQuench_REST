@@ -113,15 +113,67 @@ function createUnrec($conn, $RFID_ID)
     }
 }
 
+function checkAccIDNum($conn,$RFID_ID)
+{
+    // $query = "SELECT * FROM accounts WHERE ID_Number = '$RFID_ID'";
+    $query1 = "SELECT * from acc_users WHERE ID_Number = '$RFID_ID'";
+    $query2 = "SELECT * from acc_admin WHERE ID_Number = '$RFID_ID'";
+    $query3 = "SELECT * from acc_cashier WHERE ID_Number = '$RFID_ID'";
+
+    $result1 = mysqli_query($conn, $query1);
+    $result2 = mysqli_query($conn, $query2);
+    $result3 = mysqli_query($conn, $query3);
+    
+    $response = array();
+    if (mysqli_num_rows($result1) == 1) {
+        $response['Success'] = true;
+        $row = mysqli_fetch_assoc($result1);
+        $response['Acc_ID'] = $row['Acc_ID'];
+    } else if (mysqli_num_rows($result2) == 1) {
+        //error occured. Duplicate account detected
+        $response['Success'] = true;
+        $row = mysqli_fetch_assoc($result2);
+        $response['Acc_ID'] = $row['Acc_ID'];
+    } else if (mysqli_num_rows($result3) == 1) {
+        $response['Success'] = true;
+        $row = mysqli_fetch_assoc($result3);
+        $response['Acc_ID'] = $row['Acc_ID'];
+    }else{
+        $response['Success'] = false;
+    }
+    return $response;
+}
+
+function checkUnrecIDNum($conn,$RFID_ID)
+{
+    $query = "SELECT * FROM unrecorded_users WHERE ID_Number = '$RFID_ID'";
+    $result = mysqli_query($conn, $query);
+    $response = array();
+    if (mysqli_num_rows($result) == 1) {
+        $response['Success'] = true;
+        $row = mysqli_fetch_assoc($result);
+        $response['UU_ID'] = $row['UU_ID'];
+    } else if (mysqli_num_rows($result) > 1) {
+        //error occured. Duplicate account detected
+        $response['Success'] = false;
+    } else {
+        $response['Success'] = false;
+    }
+    return $response;
+}
+
+
+
 $contents = file_get_contents('php://input');
 $response = array();
 if ($contents != null) {
     $data = json_decode($contents);
+    $RFID_ID = $data -> {"RFID_ID"};
 
-    $RFID_ID = $data->{"RFID_ID"};
 
     $rfid_result = checkAcc($conn, $RFID_ID);
     $unrec_result = checkUnrec($conn, $RFID_ID);
+
     if ($unrec_result['Success']) {
         $response['Success'] = true;
         $response['Account'] = getUnrec($conn, $unrec_result['UU_ID']);
@@ -131,14 +183,27 @@ if ($contents != null) {
         $response['Account'] = getAcc($conn, $rfid_result['Acc_ID']);
         $response['Account_Type'] = 'Recorded';
     } else {
-        $insert_id = createUnrec($conn, $RFID_ID);
-        if ($insert_id != null) {
+        $id_num_result = checkAccIDNum($conn,$RFID_ID);
+        $unrec_id_num_result = checkUnrecIDNum($conn,$RFID_ID);
+
+        if ($id_num_result['Success']) {
             $response['Success'] = true;
-            $response['Account_Type'] = 'Inserted_Unrecorded';
-            $response['Insert_ID'] = $insert_id;
-            $response['Balance'] = 0;
-        } else {
-            $response['Success'] = false;
+            $response['Account'] = getAcc($conn, $id_num_result['UU_ID']);
+            $response['Account_Type'] = 'Recorded';
+        } else if ($unrec_id_num_result['Success']) {
+            $response['Success'] = true;
+            $response['Account'] = getUnrec($conn, $unrec_id_num_result['UU_ID']);
+            $response['Account_Type'] = 'Unrecorded';
+        }else{
+            $insert_id = createUnrec($conn, $RFID_ID);
+            if ($insert_id != null) {
+                $response['Success'] = true;
+                $response['Account_Type'] = 'Inserted_Unrecorded';
+                $response['Insert_ID'] = $insert_id;
+                $response['Balance'] = 0;
+            } else {
+                $response['Success'] = false;
+            }
         }
     }
 } else {
