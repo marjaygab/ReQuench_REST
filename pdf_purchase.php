@@ -117,10 +117,10 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
     $pdf->Write(6, " purchases/s.");
-    $pdf->Ln(12);
+    $pdf->Ln(8);
     $pdf->Write(6, "Top Purchaser: ");
     $pdf->Write(6, $top['User_Name']);
-    $pdf->Ln(12);
+    $pdf->Ln(8);
     $pdf->Write(6, "The Sales Revenue for ");
     $pdf->Write(6, $start_date);
     $pdf->Write(6, " to ");
