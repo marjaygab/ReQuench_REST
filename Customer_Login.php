@@ -188,7 +188,7 @@ if ($contents != null) {
 
         if ($id_num_result['Success']) {
             $response['Success'] = true;
-            $response['Account'] = getAcc($conn, $id_num_result['UU_ID']);
+            $response['Account'] = getAcc($conn, $id_num_result['Acc_ID']);
             $response['Account_Type'] = 'Recorded';
         } else if ($unrec_id_num_result['Success']) {
             $response['Success'] = true;
