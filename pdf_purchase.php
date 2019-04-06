@@ -22,7 +22,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "ReQuench: Purchase Report";
+    $reportName = "Purchase Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
@@ -102,6 +102,7 @@ Create the page header, main heading, and intro text
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "Issued on: ");
     $pdf->Write(6, date("F t y"));
+    $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);

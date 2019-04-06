@@ -121,13 +121,16 @@ Create the page header, main heading, and intro text
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(6, "Issued on: ");
+    $pdf->Write(6, date("F t y"));
+    $pdf->Ln(12);
+    $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $gettransaction_rows);
     $pdf->Write(6, " transaction/s from ");
     $pdf->Write(6, $start_date);
     $pdf->Write(6, " to ");
     $pdf->Write(6, $end_date);
-    // $pdf->Write(6, date('F'));
     $pdf->Ln(12);
     $pdf->Write(6, "Hot Water Dispensed: ");
     $pdf->Write(6, $row1['hot'] * 500);
