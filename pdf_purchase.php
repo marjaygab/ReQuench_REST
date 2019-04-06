@@ -96,7 +96,7 @@ Create the page header, main heading, and intro text
     WHERE Date BETWEEN '$start_date' AND '$end_date'")
     or die("database error:" . mysqli_error($connString));
     $sales= mysqli_fetch_array($result5);
-    $sales_revenue = $sales * 10;
+    $sales_revenue = $sales['total'] * 10;
 
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
@@ -112,7 +112,7 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
     $pdf->Ln(12);
     $pdf->Write(6, "Issued on: ");
-    $pdf->Write(6, date("F j, y,"));
+    $pdf->Write(6, date("F j, Y"));
     $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 12);
 
