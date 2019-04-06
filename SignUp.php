@@ -134,7 +134,7 @@ function transferTransactions($conn,$transactions,$Acc_ID)
         $Transacation_ID = $transactions[$i]['Transaction_ID'];
         $query = "INSERT INTO transaction_history (Acc_ID,MU_ID,Date,Time,Amount,Temperature,Price_Computed,Water_Level_Before,Water_Level_After,Remaining_Balance) VALUES 
         ('$Acc_ID','$MU_ID','$Date','$Time','$Amount','$Temperature','$Price_Computed','$Water_Level_Before','$Water_Level_After','$Remaining_Balance')";
-        $query1 = "DELETE FROM transactions_history_unrec WHERE Transaction_ID = '$Transacation_ID'";
+        $query1 = "DELETE FROM transaction_history_unrec WHERE Transaction_ID = '$Transacation_ID'";
         if (!mysqli_query($conn,$query)) {
           continue;
         }else{
