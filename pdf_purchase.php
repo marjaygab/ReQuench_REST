@@ -90,6 +90,14 @@ Create the page header, main heading, and intro text
     $gettop= mysqli_num_rows($toppurchaser);
     $top = mysqli_fetch_array($toppurchaser);
     
+    $result5 = mysqli_query($conn,
+    "SELECT SUM(Price_Computed) as total FROM transaction_history
+    LEFT JOIN machine_unit ON transaction_history.MU_ID= machine_unit.MU_ID
+    WHERE Date BETWEEN '$start_date' AND '$end_date'")
+    or die("database error:" . mysqli_error($connString));
+    $sales= mysqli_fetch_array($result5);
+    $sales_revenue = $sales * 10;
+
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 14);
     $pdf->Cell(0, 15, $reportName, 0, 0, 'C');
@@ -100,8 +108,12 @@ Create the page header, main heading, and intro text
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(6, "Issued by: ");
+    $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
+    $pdf->Ln(12);
     $pdf->Write(6, "Issued on: ");
-    $pdf->Write(6, date("F t y"));
+    $pdf->Write(6, date("F j, y,"));
+    $pdf->Ln(12);
     $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
@@ -110,8 +122,14 @@ Create the page header, main heading, and intro text
     $pdf->Ln(12);
     $pdf->Write(6, "Top Purchaser: ");
     $pdf->Write(6, $top['User_Name']);
-
-    
+    $pdf->SetFont('Arial', '', 12);
+    $pdf->Ln(12);
+    $pdf->Write(6, "The Sales Revenue for");
+    $pdf->Write(6, $start_date);
+    $pdf->Write(6, " to ");
+    $pdf->Write(6, $end_date);
+    $pdf->Write(6, " is ");
+    $pdf->Write(6, $sales_revenue);
 //header
 
     $pdf->Ln(12);
