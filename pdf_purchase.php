@@ -110,9 +110,10 @@ Create the page header, main heading, and intro text
     $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "Issued by: ");
     $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
-    $pdf->Ln(12);
+    $pdf->Ln(6);
     $pdf->Write(6, "Issued on: ");
     $pdf->Write(6, date("F j, Y"));
+    $pdf->Ln(12);
     $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 12);
 
@@ -124,7 +125,7 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, $top['User_Name']);
     $pdf->SetFont('Arial', '', 12);
     $pdf->Ln(12);
-    $pdf->Write(6, "The Sales Revenue for");
+    $pdf->Write(6, "The Sales Revenue for ");
     $pdf->Write(6, $start_date);
     $pdf->Write(6, " to ");
     $pdf->Write(6, $end_date);
