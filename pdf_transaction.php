@@ -25,7 +25,7 @@ function getpdf($conn, $start_date, $end_date)
     $tableHeaderLeftFillColour = array(184, 207, 229);
     $tableBorderColour = array(50, 50, 50);
     $tableRowFillColour = array(213, 170, 170);
-    $reportName = "Transaction Report";
+    $reportName = "Transaction and Sales Report";
     $reportNameYPos = 140;
     $logoFile = "user_images/BrandwLogo.png";
     $logoXPos = 30;
