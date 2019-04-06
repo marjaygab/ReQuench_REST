@@ -114,8 +114,8 @@ Create the page header, main heading, and intro text
     $pdf->Write(6, "Issued on: ");
     $pdf->Write(6, date("F j, y,"));
     $pdf->Ln(12);
-    $pdf->Ln(12);
     $pdf->SetFont('Arial', '', 12);
+
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
     $pdf->Write(6, " purchases/s.");
