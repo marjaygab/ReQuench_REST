@@ -107,15 +107,15 @@ Create the page header, main heading, and intro text
     $pdf->Ln(16);
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetFont('Arial', '', 11);
     $pdf->Write(6, "Issued by: ");
     $pdf->Write(6, "De La Salle Lipa, ReQuench: A DLSL Water Vending Machine");
-    $pdf->Ln(6);
+    $pdf->Ln(8);
     $pdf->Write(6, "Issued on: ");
     $pdf->Write(6, date("F j, Y"));
     $pdf->Ln(12);
-    $pdf->Ln(12);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->Ln(6);
+    $pdf->SetFont('Arial', '', 1);
 
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
@@ -123,7 +123,7 @@ Create the page header, main heading, and intro text
     $pdf->Ln(12);
     $pdf->Write(6, "Top Purchaser: ");
     $pdf->Write(6, $top['User_Name']);
-    $pdf->SetFont('Arial', '', 12);
+    $pdf->SetFont('Arial', '', 11);
     $pdf->Ln(12);
     $pdf->Write(6, "The Sales Revenue for ");
     $pdf->Write(6, $start_date);
@@ -134,7 +134,7 @@ Create the page header, main heading, and intro text
 //header
 
     $pdf->Ln(12);
-    $pdf->SetFont('Arial', 'B', 15);
+    $pdf->SetFont('Arial', 'B', 14);
     $pdf->Cell(0, 15, "List of Purchases", 0, 0, 'C');
     $pdf->Ln(12);
 
