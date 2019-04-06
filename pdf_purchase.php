@@ -104,7 +104,7 @@ Create the page header, main heading, and intro text
     $pdf->SetTextColor($headerColour[0], $headerColour[1], $headerColour[2]);
     $pdf->SetFont('Arial', '', 17);
 
-    $pdf->Ln(16);
+    $pdf->Ln(20);
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 11);
@@ -113,17 +113,13 @@ Create the page header, main heading, and intro text
     $pdf->Ln(8);
     $pdf->Write(6, "Issued on: ");
     $pdf->Write(6, date("F j, Y"));
-    $pdf->Ln(12);
-    $pdf->Ln(6);
-    $pdf->SetFont('Arial', '', 1);
-
+    $pdf->Ln(15);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
     $pdf->Write(6, " purchases/s.");
     $pdf->Ln(12);
     $pdf->Write(6, "Top Purchaser: ");
     $pdf->Write(6, $top['User_Name']);
-    $pdf->SetFont('Arial', '', 11);
     $pdf->Ln(12);
     $pdf->Write(6, "The Sales Revenue for ");
     $pdf->Write(6, $start_date);
