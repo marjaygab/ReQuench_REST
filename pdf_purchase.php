@@ -100,6 +100,9 @@ Create the page header, main heading, and intro text
 
     $pdf->SetTextColor($textColour[0], $textColour[1], $textColour[2]);
     $pdf->SetFont('Arial', '', 12);
+    $pdf->Write(6, "Issued on: ");
+    $pdf->Write(6, date("F t y"));
+    $pdf->SetFont('Arial', '', 12);
     $pdf->Write(6, "There are a total of ");
     $pdf->Write(6, $getpurchase_rows);
     $pdf->Write(6, " purchases/s.");
