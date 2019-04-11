@@ -15,6 +15,8 @@
             return false;
         }
     }
+
+    
     $contents = file_get_contents('php://input');
     $response = array();
     if ($contents != NULL) {

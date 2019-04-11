@@ -197,7 +197,6 @@ if ($contents != null) {
   $Access_Level = "USER";
   $response = array();
   $add_response = addAccount($conn,$ID_Number,$First_Name,$Last_Name,$User_Name,$Password,$Email,$Access_Level);
-  echo $add_response;
   if ($add_response != false) {
     $Acc_ID = $add_response;
     $check_response = checkIfUnrecorded($conn,$ID_Number);
