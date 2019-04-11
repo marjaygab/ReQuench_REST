@@ -200,7 +200,6 @@ if ($contents != null) {
   if ($add_response != false) {
     $Acc_ID = $add_response;
     $check_response = checkIfUnrecorded($conn,$ID_Number);
-    var_dump($check_response);
     if ($check_response != false) {
       $UU_ID = $check_response['UU_ID'];
       if (updateBalance($conn,$Acc_ID,$check_response['Balance'])) {
