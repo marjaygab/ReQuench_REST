@@ -32,7 +32,7 @@ if ($contents != null) {
     $model_num = $data->{"Model_Number"};
     $machine_loc = $data->{"Machine_Location"};
     $date_of_purchase = $data->{"Date_of_Purchase"};
-    $secret_key = $data->{"Secret_Key"};
+    $secret_key = $data->{"Secret"};
     $response = array();
     if (addMachine($conn,$model_num,$machine_loc,$date_of_purchase,$secret_key)) {
         $response['Success'] = true;
