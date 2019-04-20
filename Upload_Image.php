@@ -23,8 +23,8 @@ function upload($conn,$account_id,$image_string,$file_name)
   
   if (mysqli_num_rows($result) == 1) {
     $row = mysqli_fetch_assoc($result);
-    $previous_image_path = $row['Image_Path'];
-    unlink($previous_image_path) or die('Couldnt delete file');
+    $previous_image_path = '.' . $row['Image_Path'];
+    unlink($previous_image_path);
     $query = "UPDATE acc_images SET Image_Path= '$relative_path' WHERE Acc_ID='$account_id'";
   }else{
     $query = "INSERT INTO acc_images (Acc_ID,Image_Path) VALUES ('$account_id','$relative_path')";
