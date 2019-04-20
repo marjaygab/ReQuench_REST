@@ -19,12 +19,13 @@ function fetchImage($conn,$acc_id){
   $result = mysqli_query($conn,$query);
   if (mysqli_num_rows($result) == 1) {
     // $output = mysqli_fetch_assoc();
-    while ($row = mysqli_fetch_assoc($result)) {
-      $file_path = $row["Image_Path"];
-    }
+    $row = mysqli_fetch_assoc($result);
+    $file_path = $row["Image_Path"];
+
     $file_path = "https://requench-rest.herokuapp.com" . $file_path;
     $response = array();
     $response["image"] = base64_encode(file_get_contents($file_path));
+    $response["image_link"] = $file_path;
     $response["Success"] = "true";
   }else{
     //No Image Exists for specific User. Display Default Image
