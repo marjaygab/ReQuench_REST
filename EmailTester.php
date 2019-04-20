@@ -1,7 +1,6 @@
 <?php
 // API access key from Google API's Console
 require 'ConnectDB.php';
-require 'sendgrid-php\sendgrid-php.php';
 
 function sendEmail($conn,$name_sender,$email_sender,$message)
 {
