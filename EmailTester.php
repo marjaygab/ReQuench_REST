@@ -4,11 +4,10 @@ require 'ConnectDB.php';
 
 function sendEmail($conn,$name_sender,$email_sender,$message)
 {
-    echo '1';
     $api_key = $_ENV['SENDGRID_API_KEY'];
     define( 'SENDGRID_API_KEY', $api_key);
     $personalizations = array();
-    echo '2';
+    echo $api_key;
 
     $from_email = array();
     $sender[] = $email_sender;
