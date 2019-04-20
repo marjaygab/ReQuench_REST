@@ -7,7 +7,6 @@ function sendEmail($conn,$name_sender,$email_sender,$message)
     $api_key = $_ENV['SENDGRID_API_KEY'];
     define( 'SENDGRID_API_KEY', $api_key);
     $personalizations = array();
-    echo $api_key;
 
     $from_email = array();
     $sender[] = $email_sender;
