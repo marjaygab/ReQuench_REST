@@ -118,7 +118,13 @@ if ($contents != null) {
     $name_sender = $data->{"name_sender"};
     $email_sender = $data->{"email_sender"};
     $message = $data->{"message"};
-    sendEmail($conn,$name_sender,$email_sender,$message);
+    $result = sendEmail($conn,$name_sender,$email_sender,$message);
+    if ($result) {
+        $response['Success'] = true;
+    } else {
+        $response['Success'] = false;
+    }
+    
 }else{
   die("An Error Occured");
 }
