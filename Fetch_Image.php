@@ -25,7 +25,7 @@ function fetchImage($conn,$acc_id){
     $file_path = "https://requench-rest.herokuapp.com" . $file_path;
     $response = array();
     $response["image"] = base64_encode(file_get_contents($file_path));
-    $response["image_link"] = $file_path;
+    $response["image_link"] = $file_path
     $response["Success"] = "true";
   }else{
     //No Image Exists for specific User. Display Default Image
