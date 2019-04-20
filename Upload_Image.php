@@ -12,12 +12,7 @@ header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 
 function upload($conn,$account_id,$image_string,$file_name)
 {
-  $relative_path = "/user_images/".$file_name;
-  $file_path = __DIR__ . $relative_path;
-  $binary = base64_decode($image_string);
-  $file = fopen($file_path,'wb');
-  fwrite($file,$binary);
-  fclose($file);
+  
   $query = "SELECT * from acc_images WHERE Acc_ID = '$account_id'";
   $result = mysqli_query($conn,$query);
   
@@ -25,8 +20,20 @@ function upload($conn,$account_id,$image_string,$file_name)
     $row = mysqli_fetch_assoc($result);
     $previous_image_path = '.' . $row['Image_Path'];
     unlink($previous_image_path);
+    $relative_path = "/user_images/".$file_name;
+    $file_path = __DIR__ . $relative_path;
+    $binary = base64_decode($image_string);
+    $file = fopen($file_path,'wb');
+    fwrite($file,$binary);
+    fclose($file);
     $query = "UPDATE acc_images SET Image_Path= '$relative_path' WHERE Acc_ID='$account_id'";
   }else{
+    $relative_path = "/user_images/".$file_name;
+    $file_path = __DIR__ . $relative_path;
+    $binary = base64_decode($image_string);
+    $file = fopen($file_path,'wb');
+    fwrite($file,$binary);
+    fclose($file);
     $query = "INSERT INTO acc_images (Acc_ID,Image_Path) VALUES ('$account_id','$relative_path')";
   }
   $response = array();
