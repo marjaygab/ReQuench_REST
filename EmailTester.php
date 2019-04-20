@@ -5,10 +5,11 @@ require 'sendgrid-php\sendgrid-php.php';
 
 function sendEmail($conn,$name_sender,$email_sender,$message)
 {
+    echo '1';
     $api_key = $_ENV['SENDGRID_API_KEY'];
     define( 'SENDGRID_API_KEY', $api_key);
     $personalizations = array();
-    
+    echo '2';
 
     $from_email = array();
     $sender[] = $email_sender;
