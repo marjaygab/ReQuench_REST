@@ -3,11 +3,11 @@
 require 'ConnectDB.php';
 require 'sendgrid-php\sendgrid-php.php';
 
-
 function sendEmail($conn,$name_sender,$email_sender,$message)
 {
     $api_key = $_ENV['SENDGRID_API_KEY'];
-    echo 'API KEY: ' . $api_key;
+    define( 'SENDGRID_API_KEY', $api_key);
+    echo SENDGRID_API_KEY;
     $personalizations = array();
     
 
