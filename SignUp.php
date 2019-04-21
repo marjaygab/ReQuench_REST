@@ -185,6 +185,18 @@ function updateBalance($conn,$Acc_ID,$Balance)
   }
 }
 
+function updateRFID($conn,$Acc_ID,$RFID_ID)
+{
+  $query = "UPDATE accounts SET RFID_ID = '$RFID_ID' WHERE Acc_ID = '$Acc_ID'";
+  if (mysqli_query($conn,$query)) {
+    return true;
+  }else{
+    return false;
+  }
+}
+
+
+
 $contents = file_get_contents('php://input');
 if ($contents != null) {
   $data = json_decode($contents);
@@ -202,7 +214,7 @@ if ($contents != null) {
     $check_response = checkIfUnrecorded($conn,$ID_Number);
     if ($check_response != false) {
       $UU_ID = $check_response['UU_ID'];
-      if (updateBalance($conn,$Acc_ID,$check_response['Balance'])) {
+      if (updateBalance($conn,$Acc_ID,$check_response['Balance']) && updateRFID($conn,$Acc_ID,$check_response['RFID_ID'])) {
         if (deleteUnrec($conn,$UU_ID)) {
           $transactions_list = fetchTransactions($conn,$UU_ID);
           $purchases_list = fetchPurchases($conn,$UU_ID);
