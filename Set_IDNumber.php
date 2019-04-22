@@ -32,6 +32,7 @@
             $response['Success'] = true;
             $row = mysqli_fetch_assoc($result1);
             $response['ID_Number'] = $row['ID_Number'];
+            $response['Acc_ID'] = $row['Acc_ID'];
         } else if (mysqli_num_rows($result2) == 1) {
             //error occured. Duplicate account detected
             $response['Success'] = true;
@@ -77,6 +78,16 @@
         
     }
 
+    function updateRFID($conn,$RFID_ID,$Acc_ID)
+    {
+        $query = "UPDATE accounts SET RFID_ID = '$RFID_ID' WHERE Acc_ID = $Acc_ID";
+        if (mysqli_query($conn,$query)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 
 
@@ -86,19 +97,22 @@
         $data = json_decode($contents);
         $UU_ID = $data -> {"UU_ID"};
         $ID_Number = $data -> {"ID_Number"};
-
+        $RFID_ID = $data->{"RFID_ID"};
         $id_num_result = checkAccIDNum($conn,$ID_Number);
         
         if ($id_num_result['Success']) {
-            if (deleteUnrec($conn,$UU_ID)) {
+            $Acc_ID = $id_num_result['Acc_ID'];
+            if (deleteUnrec($conn,$UU_ID) && updateRFID($conn,$RFID_ID,$Acc_ID)) {
                 $response['Success'] = true;
                 $response['ID_Number'] = $id_num_result['ID_Number'];    
+                $response['Account_Type'] = 'Recorded';
             } else {
                 $response['Success'] = false;    
             }
         }else if (setID($conn,$UU_ID,$ID_Number)) {
             $response['Success'] = true;
             $response['ID_Number'] = $ID_Number;
+            $response['Account_Type'] = 'Unrecorded';
         } else {
             $response['Success'] = false;
         }   
