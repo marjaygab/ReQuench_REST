@@ -106,6 +106,7 @@
                 $response['Success'] = true;
                 $response['ID_Number'] = $id_num_result['ID_Number'];    
                 $response['Account_Type'] = 'Recorded';
+                $response['Acc_ID'] = $Acc_ID;
             } else {
                 $response['Success'] = false;    
             }
