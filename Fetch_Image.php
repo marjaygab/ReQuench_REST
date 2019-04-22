@@ -23,6 +23,7 @@ function fetchImage($conn,$acc_id){
     //No Image Exists for specific User. Display Default Image
     $file_path = "https://requench-rest.herokuapp.com/source_images/MainLogo.png";
     $response = array();
+    $response["image"] = base64_encode(file_get_contents($file_path));
     $response["image_link"] = $file_path;
     $response["Success"] = "true";
   }
