@@ -1,19 +1,11 @@
 <?php
-
-
 require 'ConnectDB.php';
-
-
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-
-
-
-
 function fetchImage($conn,$acc_id){
   $query = "SELECT Image_Path FROM acc_images WHERE Acc_ID = '$acc_id'";
   $result = mysqli_query($conn,$query);
@@ -31,7 +23,6 @@ function fetchImage($conn,$acc_id){
     //No Image Exists for specific User. Display Default Image
     $file_path = "https://requench-rest.herokuapp.com/source_images/MainLogo.png";
     $response = array();
-    $response["image"] = base64_encode(file_get_contents($file_path));
     $response["image_link"] = $file_path;
     $response["Success"] = "true";
   }
